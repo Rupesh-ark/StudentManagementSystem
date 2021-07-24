@@ -186,7 +186,7 @@ public:
 			std::cout << "\n\n\n" << "RECORD DELETED SUCCESSFULLY\n";
 		}
 		else
-			std::cout << "\nPRODUCT NUMBER AND NAME DOES NOT MATCH\n";
+			std::cout << "\nUsn and Name does not Match\n";
 	}
 
 	int GetPrimaryIndex(char* studentName)
@@ -209,7 +209,7 @@ public:
 		int j, pos = -1, count = 0;
 
 		std::cout << "\n" << "\t\tTHE SEARCHED RECORD DETAILS ARE...:";
-		std::cout << "\n" << "\t\t" << "SL.NO." << "\t\t" << "PID" << "NAME" << std::endl;
+		std::cout << "\n" << "\t\t" << "S.No" << "\t\t" << "USN" << "Student Name" << std::endl;
 		Opener(stdFile,DATADIR, std::ios::in | std::ios::out);
 		for (j = 0; j < sIndexSize; j++)
 			if (strcmp(studentName, sIndex[j].sName) == 0)

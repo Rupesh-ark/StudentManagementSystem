@@ -6,7 +6,7 @@ private:
 
 	char usn[11], studentName[20], dob[20], gender[6], phNo[11];
 	char sem[2];
-	Operations op;
+	Operations operations;
 public:
 
 	StudentManagement()
@@ -26,14 +26,14 @@ public:
 
 		std::cout << "\n\tEnter the USN :";
 		std::cin >> usn;
-		flag = op.IsValid(usn, VariableType::usn);
+		flag = operations.IsValid(usn, VariableType::usn);
 		if (!flag) {
 			StudentInput();
 		}
 
 		std::cout << "\n\tEnter the Student name    :";
 		std::cin >> studentName;
-		flag = op.IsValid(studentName, VariableType::name);
+		flag = operations.IsValid(studentName, VariableType::name);
 		if (!flag) {
 			std::cout << "Student Name accept only characters" << std::endl;
 			std::cout << "\n\tEnter the Student name    :";
@@ -41,7 +41,7 @@ public:
 		}
 		std::cout << "\n\tEnter the Sex :";
 		std::cin >> gender;
-		flag = op.IsValid(gender, VariableType::gender);
+		flag = operations.IsValid(gender, VariableType::gender);
 		if (!flag) {
 			std::cout << "Sex accept only characters upto a certain length" << std::endl;
 			std::cout << "\n\tEnter the sex :";
@@ -49,7 +49,7 @@ public:
 		}
 		std::cout << "\n\tEnter the date of birth:";
 		std::cin >> dob;
-		flag = op.IsValid(dob, VariableType::dob);
+		flag = operations.IsValid(dob, VariableType::dob);
 		if (!flag) {
 			std::cout << "Date of Birth accept only characters and / symbol" << std::endl;
 			std::cout << "\n\tEnter the Date of Birth:";
@@ -57,7 +57,7 @@ public:
 		}
 		std::cout << "\n\tEnter the Phone number  :";
 		std::cin >> phNo;
-		flag = op.IsValid(phNo, VariableType::phNo);
+		flag = operations.IsValid(phNo, VariableType::phNo);
 		if (!flag) {
 			std::cout << "Phone number accept only numbers" << std::endl;
 			std::cout << "\n\tEnter the Phone number  :";
@@ -65,7 +65,7 @@ public:
 		}
 		std::cout << "\n\tEnter the sem  :";
 		std::cin >> sem;
-		flag = op.IsValid(sem, VariableType::sem);
+		flag = operations.IsValid(sem, VariableType::sem);
 		if (!flag) {
 			std::cout << "\n\tEnter the sem  :";
 			std::cin >> sem;
