@@ -113,20 +113,13 @@ public:
 	std::string DateToText(Date pDate)
 	{
 		std::string dateText = "";
-		char day[3];
-		char month[3];
-		char year[5];
-
-		itoa(pDate.Day, day, 10);
-		itoa(pDate.Month, month, 10);
-		itoa(pDate.Year, year, 10);
-
-		dateText += day;
-		dateText += month;
-		dateText += year;
+		dateText += std::to_string(pDate.Day);
+		dateText += '/';
+		dateText += std::to_string(pDate.Month);
+		dateText += '/';
+		dateText += std::to_string(pDate.Year);
 
 		return dateText;
-
 	}
 
 	std::string GenderToText(Gender gender)

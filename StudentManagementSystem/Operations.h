@@ -1,19 +1,15 @@
 #pragma once
-#ifndef OPERATION_H
-#define OPERATION_H
-#define INDEXDIR "index.txt"
-#define SINDEXDIR "sIndex.txt"
-#define DATADIR "data.txt"
+#ifndef OPERATIONS_H
+#define OPERATIONS_H
+#define INDEXDIREC "index.txt"
+#define SINDEXDIREC "sIndex.txt"
+#define DATADIREC "data.txt"
 #define USNSTD 10
 #define PHNSTD 10
 #define SEMONE 49
 #define SEMEIGHT 56
-#include<dos.h>
 #include<iomanip>
 #include<stdlib.h>
-#include<Windows.h>
-#include<stdlib.h>
-#include<ctype.h>
 #include<iostream>
 #include<fstream>
 #include<stdio.h>
@@ -193,7 +189,7 @@ public:
 	{
 		int i, j, index = -1;
 		std::cout << "\n\t\t" << studentName << ":";
-		Opener(sIndexFile, SINDEXDIR, std::ios::in);
+		Opener(sIndexFile, SINDEXDIREC, std::ios::in);
 		for (j = 0; j < sIndexSize; j++)
 			if (strcmp(studentName, sIndex[j].sName) == 0)
 			{
@@ -210,7 +206,7 @@ public:
 
 		std::cout << "\n" << "\t\tTHE SEARCHED RECORD DETAILS ARE...:";
 		std::cout << "\n" << "\t\t" << "S.No" << "\t\t" << "USN" << "Student Name" << std::endl;
-		Opener(stdFile,DATADIR, std::ios::in | std::ios::out);
+		Opener(stdFile,DATADIREC, std::ios::in | std::ios::out);
 		for (j = 0; j < sIndexSize; j++)
 			if (strcmp(studentName, sIndex[j].sName) == 0)
 			{
@@ -224,7 +220,7 @@ public:
 
 	void InitializeIndex(std::fstream& indexFile, Index id[])
 	{
-		indexFile.open(INDEXDIR, std::ios::in);
+		indexFile.open(INDEXDIREC, std::ios::in);
 		if (!indexFile)
 		{
 			indexSize = 0;
@@ -242,7 +238,7 @@ public:
 
 	void InitializeSIndex(std::fstream& sIndexFile, SIndex sId[])
 	{
-		sIndexFile.open(SINDEXDIR, std::ios::in);
+		sIndexFile.open(SINDEXDIREC, std::ios::in);
 		if (!sIndexFile)
 		{
 			sIndexSize = 0;
@@ -261,7 +257,7 @@ public:
 	void IndexWrite(Index id[])
 	{
 		int i;
-		Opener(indexFile, INDEXDIR, std::ios::out);
+		Opener(indexFile, INDEXDIREC, std::ios::out);
 		for (i = 0; i < indexSize; i++)
 			indexFile << id[i].usn << '|' << id[i].address << "\n";
 	}
@@ -269,7 +265,7 @@ public:
 	void SIndexWrite(SIndex sId[])
 	{
 		int i;
-		Opener(sIndexFile, SINDEXDIR, std::ios::out);
+		Opener(sIndexFile, SINDEXDIREC, std::ios::out);
 		for (i = 0; i < sIndexSize; i++)
 			sIndexFile << sId[i].sName << '|' << sId[i].sUsn << "\n";
 	}
