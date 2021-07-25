@@ -2,96 +2,308 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 #include<fstream>
+#include<stdlib.h>
+#include<string>
+
+enum class Gender
+{
+	Male,
+	Female,
+	Others,
+	NotSet
+};
+
+enum class Sem
+{
+	First,
+	Second,
+	Third,
+	Fourth,
+	Fifth,
+	Sixth,
+	Seventh,
+	Eight,
+	NotSet
+};
+
+struct Date
+{
+	int Day;
+	int Month;
+	int Year;
+};
+
 class Student
 {
 private:
 
-	char usn[11], studentName[20], dob[20], gender[6], sem[2], phNo[11];
+	//char usn[11], studentName[22], dob[11], gender[7], sem[2], phNo[11];
+
+	std::string usn, studentName, phno;
+	Date dob;
+	Gender gender;
+	Sem sem;
+
 public:
 
 	Student()
 	{
-		strcpy(usn, "");
-		strcpy(studentName, "");
-		strcpy(dob, "");
-		strcpy(gender, "");
-		strcpy(sem, "0");
-		strcpy(phNo, "");
+		usn = "";
+		studentName = "";
+		dob.Day = 0;
+		dob.Month = 0;
+		dob.Year = 0;
+		gender = Gender::NotSet;
+		Sem sem = Sem::NotSet;
+		phno = "";
 	}
 
-	Student(char* pUsn, char* pStudentName, char* pDob, char* pGender, char* pSem, char* pPhno)
+	Student(std::string pUsn, std::string pStudentName, Date pDob, Gender pGender, Sem pSem, std::string pPhno)
 	{
-		strcpy(usn, pUsn);
-		strcpy(studentName, pStudentName);
-		strcpy(dob, pDob);
-		strcpy(gender, pGender);
-		strcpy(sem, pSem);
-		strcpy(phNo, pPhno);
+		usn = pUsn;
+		studentName = pStudentName;
+		dob.Day = pDob.Day;
+		dob.Month = pDob.Month;
+		dob.Year = pDob.Year;
+		gender = pGender;
+		sem = pSem;
+		phno = pPhno;
 	}
 
-	char* GetUsn()
+	std::string GetUsn()
 	{
 		return usn;
 	}
 
-	char* GetName()
+	std::string GetName()
 	{
 		return studentName;
 	}
 	
-	void SetUSN(char* pUsn)
+	void SetUSN(std::string pUsn)
 	{
-		strcpy(usn, pUsn);
+		usn = pUsn;
 	}
 
-	void SetStudentName(char* pStudentName)
+	void SetStudentName(std::string pStudentName)
 	{
-		strcpy(studentName, pStudentName);
+		studentName = pStudentName;
 	}
 
-	void SetDob(char* pDob)
+	void SetDob(Date pDob)
 	{
-		strcpy(dob, pDob);
+		dob = pDob;
 	}
 
-	void SetGender(char* pGender)
+	void SetGender(Gender pGender)
 	{
-		strcpy(gender,pGender);
+		gender = pGender;
 	}
 
-	void SetSem(char* pSem)
+	void SetSem(Sem pSem)
 	{
-		strcpy(sem,pSem);
+		sem = pSem;
 	}
 
-	void SetPhone(char* pPhno)
+	void SetPhone(std::string pPhno)
 	{
-		strcpy(phNo, pPhno);
+		phno = pPhno;
 	}
 
+	std::string DateToText(Date pDate)
+	{
+		std::string dateText = "";
+		char day[3];
+		char month[3];
+		char year[5];
+
+		itoa(pDate.Day, day, 10);
+		itoa(pDate.Month, month, 10);
+		itoa(pDate.Year, year, 10);
+
+		dateText += day;
+		dateText += month;
+		dateText += year;
+
+		return dateText;
+
+	}
+
+	std::string GenderToText(Gender gender)
+	{
+		switch (gender)
+		{
+		case Gender::Male:
+			return "Male";
+		case Gender::Female:
+			return "Female";
+		case Gender::Others:
+			return "Others";
+		case Gender::NotSet:
+			return "NotSet";
+		default:
+			break;
+		}
+	}
+
+	std::string SemToText(Sem sem)
+	{
+		switch (sem)
+		{
+		case Sem::First:
+			return "First";
+		case Sem::Second:
+			return "Second";
+		case Sem::Third:
+			return "Third";
+		case Sem::Fourth:
+			return "Fourth";
+		case Sem::Fifth:
+			return "Fifth";
+		case Sem::Sixth:
+			return "Sixth";
+		case Sem::Seventh:
+			return "Seventh";
+		case Sem::Eight:
+			return "Eight";
+		case Sem::NotSet:
+			return "Not Set";
+		default:
+			break;
+		}
+	}
+
+	Date TextToDate(std::string pTextDate)
+	{
+		Date date;
+		int j = 0, i = 0;
+
+		char day[3], month[3], year[5];
+
+		for (i = 0; i < 2; i++)
+		{
+			day[i] = pTextDate[j];
+			j++;
+		}
+		day[i] = '\0';
+		j++;
+		
+		for (i = 0; i < 2; i++)
+		{
+			month[i] = pTextDate[j];
+			j++;
+		}
+		j++;
+		month[i] = '\0';
 	
+		for (i = 0; i < 4; i++)
+		{
+			year[i] = pTextDate[j];
+			j++;
+		}
+		year[j] = '\0';
+	
+		date.Day = std::atoi(day);
+		date.Month = std::atoi(month);
+		date.Year = std::atoi(year);
 
+		return date;
+		
+	}
 
-	void Pack(char* variableBuffer)
+	Sem TextToSem(std::string pTextSem)
+	{		
+		if (pTextSem == "First")
+			return Sem::First;
+		else if (pTextSem == "Second")
+			return Sem::Second;
+		else if (pTextSem == "Third")
+			return Sem::Third;
+		else if (pTextSem == "Fourth")
+			return Sem::Fourth;
+		else if (pTextSem == "Fifth")
+			return Sem::Fifth;
+		else if (pTextSem == "Sixth")
+			return Sem::Sixth;
+		else if (pTextSem == "Seventh")
+			return Sem::Seventh;
+		else if (pTextSem == "Eight")
+			return Sem::Eight;
+		else
+			return Sem::NotSet;
+	}
+
+	Gender TextToGender(std::string gender)
 	{
-		strcpy(variableBuffer, usn); strcat(variableBuffer, "|");
+		if (gender == "Male")
+			return Gender::Male;
+		else if (gender == "Female")
+			return Gender::Female;
+		else if (gender == "Others")
+			return Gender::Others;
+		else
+			return Gender::NotSet;
+	}
+
+	void Pack(std::string variableBuffer)
+	{
+
+
+		variableBuffer += usn; 
+		variableBuffer += "|";
+		variableBuffer += studentName;
+		variableBuffer += "|";
+		variableBuffer += DateToText(dob);
+		variableBuffer += "|";
+		variableBuffer += GenderToText(gender);
+		variableBuffer += "|";
+		variableBuffer += SemToText(sem);
+		variableBuffer += "|";
+		variableBuffer += phno;
+		variableBuffer += "|";
+
+		/*strcat(variableBuffer, "|");
 		strcat(variableBuffer, studentName); strcat(variableBuffer, "|");
+
 		strcat(variableBuffer, dob); strcat(variableBuffer, "|");
+		
 		strcat(variableBuffer, gender); strcat(variableBuffer, "|");
+		
 		strcat(variableBuffer, sem); strcat(variableBuffer, "|");
-		strcat(variableBuffer, phNo); strcat(variableBuffer, "|");
+		strcat(variableBuffer, phNo); strcat(variableBuffer, "|");*/
 	}
 	
 	void Unpack(std::fstream& stdfile)
 	{
-		char leftoverBuffer[70];
-		stdfile.getline(usn, 11, '|');
-		stdfile.getline(studentName, 20, '|');
-		stdfile.getline(dob, 20, '|');
-		stdfile.getline(gender, 6, '|');
+		char leftoverBuffer[62];
+
+		std::string textDob, textGender, textSem;
+
+		std::getline(stdfile, usn, '|');
+		std::getline(stdfile, studentName, '|');
+		std::getline(stdfile, textDob, '|');
+
+		dob = TextToDate(textDob);
+		std::getline(stdfile, textGender, '|');
+
+		gender = TextToGender(textGender);
+		std::getline(stdfile, textSem, '|');
+
+		sem = TextToSem(textSem);
+		std::getline(stdfile, phno, '|');
+
+		stdfile.getline(leftoverBuffer, 62, '\n');
+
+	/*	stdfile.getline(usn, 11, '|');
+		stdfile.getline(studentName, 22, '|');
+
+		stdfile.getline(dob, 11, '|');
+		
+		stdfile.getline(gender, 7, '|');
+		
 		stdfile.getline(sem, 2, '|');
-		stdfile.getline(phNo, 11, '|');
-		stdfile.getline(leftoverBuffer, 70, '\n');
+		stdfile.getline(phNo, 11, '|');*/
+		
 	}
 	
 	~Student()
