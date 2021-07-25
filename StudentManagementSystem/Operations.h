@@ -20,15 +20,15 @@
 #include<string>
 #include<fstream>
 
-enum class VariableType
-{
-	usn,
-	name,
-	dob,
-	gender,
-	sem,
-	phNo
-};
+// enum class VariableType
+// {
+// 	usn,
+// 	name,
+// 	dob,
+// 	gender,
+// 	sem,
+// 	phNo
+// };
 
 struct Index
 {
@@ -52,84 +52,84 @@ private:
 
 public:
 
-	bool IsValid(char* validate, VariableType vt)
-	{
-		bool flag = true;
-		int i = 0, len = 0;
+	// bool IsValid(char* validate, VariableType vt)
+	// {
+	// 	bool flag = true;
+	// 	int i = 0, len = 0;
 
-		switch (vt)
-		{
-		case VariableType::usn:
-		{
-			for (i = 0; validate[i] != '\0'; i++)
-			{
-				len++;
-				if (isalpha(validate[i]) == 0 && isdigit(validate[i]) == 0) {
-					return false;
-				}
-			}
+	// 	switch (vt)
+	// 	{
+	// 	case VariableType::usn:
+	// 	{
+	// 		for (i = 0; validate[i] != '\0'; i++)
+	// 		{
+	// 			len++;
+	// 			if (isalpha(validate[i]) == 0 && isdigit(validate[i]) == 0) {
+	// 				return false;
+	// 			}
+	// 		}
 
-			if (len != USNSTD)
-				flag = false;
+	// 		if (len != USNSTD)
+	// 			flag = false;
 
-			return flag;
-		}
-		case VariableType::name:
-		{
-			for (i = 0; validate[i] != '\0'; i++)
-			{
-				if (isalpha(validate[i]) == 0)
-					return false;
-			}
-			return flag;
-		}
-		case VariableType::dob:
-		{
-			for (i = 0; validate[i] != '\0'; i++) {
-				len++;
-				if (isdigit(validate[i]) == 0 && validate[i] != '/') {
-					return false;
-				}
-			}
+	// 		return flag;
+	// 	}
+	// 	case VariableType::name:
+	// 	{
+	// 		for (i = 0; validate[i] != '\0'; i++)
+	// 		{
+	// 			if (isalpha(validate[i]) == 0)
+	// 				return false;
+	// 		}
+	// 		return flag;
+	// 	}
+	// 	case VariableType::dob:
+	// 	{
+	// 		for (i = 0; validate[i] != '\0'; i++) {
+	// 			len++;
+	// 			if (isdigit(validate[i]) == 0 && validate[i] != '/') {
+	// 				return false;
+	// 			}
+	// 		}
 
-			if (len != USNSTD)
-				flag = false;
-			return flag;
-		}
-		case VariableType::gender:
-		{
-			for (i = 0; validate[i] != '\0'; i++)
-			{
-				if (isalpha(validate[i]) == 0)
-					return false;
-			}
-			return flag;
-		}
-		case VariableType::sem:
-		{
-			if (validate[0] <= SEMONE && validate[0] >= SEMEIGHT)
-				return false;
-		}
-		case VariableType::phNo:
-		{
-			for (i = 0; validate[i] != '\0'; i++) {
-				len++;
-				if (isdigit(validate[i]) == 0) {
-					return false;
-				}
-			}
+	// 		if (len != USNSTD)
+	// 			flag = false;
+	// 		return flag;
+	// 	}
+	// 	case VariableType::gender:
+	// 	{
+	// 		for (i = 0; validate[i] != '\0'; i++)
+	// 		{
+	// 			if (isalpha(validate[i]) == 0)
+	// 				return false;
+	// 		}
+	// 		return flag;
+	// 	}
+	// 	case VariableType::sem:
+	// 	{
+	// 		if (validate[0] <= SEMONE && validate[0] >= SEMEIGHT)
+	// 			return false;
+	// 	}
+	// 	case VariableType::phNo:
+	// 	{
+	// 		for (i = 0; validate[i] != '\0'; i++) {
+	// 			len++;
+	// 			if (isdigit(validate[i]) == 0) {
+	// 				return false;
+	// 			}
+	// 		}
 
-			if (len != PHNSTD)
-				flag = false;
-			return flag;
-		}
-		default:
-		{
-			break;
-		}
-		}
-		return flag;
-	}
+	// 		if (len != PHNSTD)
+	// 			flag = false;
+	// 		return flag;
+	// 	}
+	// 	default:
+	// 	{
+	// 		break;
+	// 	}
+	// 	}
+	// 	return flag;
+	// }
 
 	void Opener(std::fstream& file, const char* fn, int mode)
 	{
