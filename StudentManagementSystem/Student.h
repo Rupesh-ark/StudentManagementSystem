@@ -255,15 +255,7 @@ public:
 		variableBuffer += phno;
 		variableBuffer += "|";
 
-		/*strcat(variableBuffer, "|");
-		strcat(variableBuffer, studentName); strcat(variableBuffer, "|");
-
-		strcat(variableBuffer, dob); strcat(variableBuffer, "|");
-		
-		strcat(variableBuffer, gender); strcat(variableBuffer, "|");
-		
-		strcat(variableBuffer, sem); strcat(variableBuffer, "|");
-		strcat(variableBuffer, phNo); strcat(variableBuffer, "|");*/
+	
 	}
 	
 	void Unpack(std::fstream& stdfile)

@@ -15,16 +15,10 @@
 #include<stdio.h>
 #include<string>
 #include<fstream>
+#include<list>
+#include"PrimaryIndex.h"
+#include"SecondaryIndex.h"
 
-// enum class VariableType
-// {
-// 	usn,
-// 	name,
-// 	dob,
-// 	gender,
-// 	sem,
-// 	phNo
-// };
 
 struct Index
 {
@@ -48,84 +42,6 @@ private:
 
 public:
 
-	// bool IsValid(char* validate, VariableType vt)
-	// {
-	// 	bool flag = true;
-	// 	int i = 0, len = 0;
-
-	// 	switch (vt)
-	// 	{
-	// 	case VariableType::usn:
-	// 	{
-	// 		for (i = 0; validate[i] != '\0'; i++)
-	// 		{
-	// 			len++;
-	// 			if (isalpha(validate[i]) == 0 && isdigit(validate[i]) == 0) {
-	// 				return false;
-	// 			}
-	// 		}
-
-	// 		if (len != USNSTD)
-	// 			flag = false;
-
-	// 		return flag;
-	// 	}
-	// 	case VariableType::name:
-	// 	{
-	// 		for (i = 0; validate[i] != '\0'; i++)
-	// 		{
-	// 			if (isalpha(validate[i]) == 0)
-	// 				return false;
-	// 		}
-	// 		return flag;
-	// 	}
-	// 	case VariableType::dob:
-	// 	{
-	// 		for (i = 0; validate[i] != '\0'; i++) {
-	// 			len++;
-	// 			if (isdigit(validate[i]) == 0 && validate[i] != '/') {
-	// 				return false;
-	// 			}
-	// 		}
-
-	// 		if (len != USNSTD)
-	// 			flag = false;
-	// 		return flag;
-	// 	}
-	// 	case VariableType::gender:
-	// 	{
-	// 		for (i = 0; validate[i] != '\0'; i++)
-	// 		{
-	// 			if (isalpha(validate[i]) == 0)
-	// 				return false;
-	// 		}
-	// 		return flag;
-	// 	}
-	// 	case VariableType::sem:
-	// 	{
-	// 		if (validate[0] <= SEMONE && validate[0] >= SEMEIGHT)
-	// 			return false;
-	// 	}
-	// 	case VariableType::phNo:
-	// 	{
-	// 		for (i = 0; validate[i] != '\0'; i++) {
-	// 			len++;
-	// 			if (isdigit(validate[i]) == 0) {
-	// 				return false;
-	// 			}
-	// 		}
-
-	// 		if (len != PHNSTD)
-	// 			flag = false;
-	// 		return flag;
-	// 	}
-	// 	default:
-	// 	{
-	// 		break;
-	// 	}
-	// 	}
-	// 	return flag;
-	// }
 
 	void Opener(std::fstream& file, const char* fn, int mode)
 	{
@@ -154,30 +70,30 @@ public:
 		return -1;
 	}
 
-	void Remove(char* usn)
+	void Remove(char* usn, PrimaryIndex primaryIndex[], SecondaryIndex secondaryIndex[])
 	{
-		//char rmid[10];
-		int pos, spos, i;
-		//cout << "\nENTER THE PRODUCT NUMBER LISTED ABOVE TO DELETE..:\t";
-		//cin >> rmid;
+		
+		int position = 0, secondaryPosition = 0 , i = 0;
+		std::string tempAddress;
+
 		for (i = 0; i < sIndexSize; i++)
 		{
-			if (strcmp(index[i].usn, usn) == 0)
+			if (primaryIndex[i].GetUsn() == usn)
 			{
-				spos = i;
+				secondaryPosition = i;
 				break;
 			}
 		}
-		if (strcmp(sIndex[spos].sName, secondaryKey) == 0)
+		if (secondaryIndex[secondaryPosition].GetStudentName() == secondaryKey)
 		{
-			pos = Search(usn);
-			stdFile.seekp(atoi(index[pos].address), std::ios::beg);
+			position = Search(usn);
+			stdFile.seekp(atoi(primaryIndex[position].GetAddress().c_str()), std::ios::beg);
 			stdFile.put('$');
-			for (i = pos; i < indexSize; i++)
-				index[i] = index[i + 1];
+			for (i = position; i < indexSize; i++)
+				primaryIndex[i] = primaryIndex[i + 1];
 			indexSize--;
-			for (i = spos; i < sIndexSize; i++)
-				sIndex[i] = sIndex[i + 1];
+			for (i = secondaryPosition; i < sIndexSize; i++)
+				secondaryIndex[i] = secondaryIndex[i + 1];
 			sIndexSize--;
 			std::cout << "\n\n\n" << "RECORD DELETED SUCCESSFULLY\n";
 		}
@@ -185,41 +101,38 @@ public:
 			std::cout << "\nUsn and Name does not Match\n";
 	}
 
-	int GetPrimaryIndex(char* studentName)
+	int GetPrimaryIndex(char* studentName, SecondaryIndex secondaryIndex[])
 	{
 		int i, j, index = -1;
 		std::cout << "\n\t\t" << studentName << ":";
 		Opener(sIndexFile, SINDEXDIREC, std::ios::in);
 		for (j = 0; j < sIndexSize; j++)
-			if (strcmp(studentName, sIndex[j].sName) == 0)
+			if (studentName == secondaryIndex[j].GetStudentName())
 			{
-				std::cout << sIndex[j].sUsn << ":";
+				std::cout << secondaryIndex[j].GetStudentUsn() << ":";
 				index = j;
 			}
 		sIndexFile.close();
 		return index;
 	}
 
-	int SecondarySearch(char* studentName)
+	std::list <int> SecondarySearch(char* studentName, SecondaryIndex secondaryIndex[])
 	{
-		int j, pos = -1, count = 0;
-
-		std::cout << "\n" << "\t\tTHE SEARCHED RECORD DETAILS ARE...:";
-		std::cout << "\n" << "\t\t" << "S.No" << "\t\t" << "USN" << "Student Name" << std::endl;
+		int j;
+		std::list <int> listOfPos;
 		Opener(stdFile,DATADIREC, std::ios::in | std::ios::out);
 		for (j = 0; j < sIndexSize; j++)
-			if (strcmp(studentName, sIndex[j].sName) == 0)
+			if (studentName == secondaryIndex[j].GetStudentName())
 			{
-				count = count + 1;
-				std::cout << "\n" << "\t\t" << count << "\t\t" << sIndex[j].sUsn << sIndex[j].sName << std::endl;
-				pos = j;
+				listOfPos.push_back(j);
 			}
 
-		return pos;
+		return listOfPos;
 	}
 
-	void InitializeIndex(std::fstream& indexFile, Index id[])
+	void InitializeIndex(std::fstream& indexFile, PrimaryIndex primary[])
 	{
+		std::string tempUsn, tempAddress;
 		indexFile.open(INDEXDIREC, std::ios::in);
 		if (!indexFile)
 		{
@@ -228,8 +141,12 @@ public:
 		}
 		for (indexSize = 0;; indexSize++)
 		{
-			indexFile.getline(id[indexSize].usn, 10, '|');
-			indexFile.getline(id[indexSize].address, 5, '\n');
+			std::getline(indexFile, tempUsn, '|');
+			std::getline(indexFile, tempAddress, '|');
+
+			primary[indexSize].SetUsn(tempUsn);
+			primary[indexSize].SetAddress(tempAddress);
+
 			if (indexFile.eof())
 				break;
 		}
@@ -254,12 +171,12 @@ public:
 		sIndexFile.close();
 	}
 
-	void IndexWrite(Index id[])
+	void IndexWrite(PrimaryIndex primary[])
 	{
 		int i;
 		Opener(indexFile, INDEXDIREC, std::ios::out);
 		for (i = 0; i < indexSize; i++)
-			indexFile << id[i].usn << '|' << id[i].address << "\n";
+			indexFile << primary[i].GetUsn() << '|' << primary[i].GetAddress() << "\n";
 	}
 
 	void SIndexWrite(SIndex sId[])
