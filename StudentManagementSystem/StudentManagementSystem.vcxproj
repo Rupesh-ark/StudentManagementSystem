@@ -143,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MenuOptions.h" />
+    <ClInclude Include="PrimaryIndex.h" />
+    <ClInclude Include="SecondaryIndex.h" />
     <ClInclude Include="Student.h" />
     <ClInclude Include="Operations.h" />
   </ItemGroup>

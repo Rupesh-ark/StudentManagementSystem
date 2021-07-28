@@ -29,5 +29,11 @@
     <ClInclude Include="Operations.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="PrimaryIndex.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SecondaryIndex.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
