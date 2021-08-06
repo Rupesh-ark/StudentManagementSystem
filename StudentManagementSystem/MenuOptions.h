@@ -4,17 +4,39 @@
 #include<iostream>
 #include<iomanip>
 
+enum nMainMenuOptions
+{
+	studentRecords = 1,
+	indexing = 2,
+	exit =3
+};
+
+enum nRecordMenuOptions
+{
+	Insert = 1,
+	Update = 2,
+	Display = 3,
+	Delete = 4,
+	back = 5
+};
+
+enum nIndexMenuOptions
+{
+	simpleIndex = 1,
+	secondaryIndex = 2,
+	invertedList = 3,
+	back = 4
+};
+
 class MenuOptions{
 
-	private:
-	int userInput;
 
-	public:
+public:
 
-	void MainMenu(int wLeftSpace = 0, int height = 0) {
+	void MainMenuOptions(int wLeftSpace = 80, int height = 6) {
 	
 		system("cls");
-		system("COLOR 3F");
+		system("COLOR 1F");
 		for (int i = 0; i < height; i++)
 			std::cout << std::endl;
 
@@ -29,10 +51,9 @@ class MenuOptions{
 		std::cout << std::setw(wLeftSpace) <<"\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) <<"\t\t\t  **************************************************************************************\n ";
 
-		std::cin >> userInput;
 	}
 	
-	void RecordsMenu(int wLeftSpace = 0, int height = 0) {
+	void RecordsMenuOptions(int wLeftSpace = 80, int height = 6) {
 
 		system("cls");
 		system("COLOR 2F");
@@ -51,13 +72,11 @@ class MenuOptions{
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **************************************************************************************\n ";
-		
-		std::cin >> userInput;
-
+	
 	}
 
 
-	void IndexMenu(int wLeftSpace = 0, int height = 0) {
+	void IndexMenuOptions(int wLeftSpace = 80, int height = 6) {
 
 		system("cls");
 		system("COLOR 5F");
@@ -75,10 +94,8 @@ class MenuOptions{
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **************************************************************************************\n ";
-
-		std::cin >> userInput;
+	
 	}
-
 
 };
 

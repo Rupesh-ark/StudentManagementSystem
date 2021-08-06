@@ -10,8 +10,6 @@ private:
 	
 	std::string usn, address;
 
-
-
 public:
 
 	PrimaryIndex();
@@ -20,8 +18,6 @@ public:
 	std::string GetAddress();
 	void SetUsn(std::string usn);
 	void SetAddress(std::string usn);
-	
-
 
 };
 
@@ -60,18 +56,6 @@ PrimaryIndex::~PrimaryIndex()
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -13,22 +13,13 @@
 #include<iostream>
 #include<fstream>
 #include<stdio.h>
+#include<ctype.h>
 #include<string>
 #include<fstream>
 #include<list>
 #include"PrimaryIndex.h"
 #include"SecondaryIndex.h"
 
-
-struct Index
-{
-	char usn[11], address[5];
-};
-
-struct SIndex
-{
-	char sName[20], sUsn[11];
-};
 
 class Operations
 {
@@ -41,6 +32,15 @@ private:
 
 public:
 
+	int getIndexSize()
+	{
+		return indexSize;
+	}
+
+	int getSecondaryIndexSize()
+	{
+		return sIndexSize;
+	}
 
 	bool Opener(std::fstream& file, const char* fn, int mode)
 	{
@@ -53,7 +53,7 @@ public:
 		
 	}
 
-	int Search(char* fid, PrimaryIndex primary[])
+	int Search(std::string fid, PrimaryIndex primary[])
 	{
 		int low = 0, high = indexSize - 1;
 		int middle;
@@ -70,7 +70,7 @@ public:
 		return -1;
 	}
 
-	bool Remove(char* usn, PrimaryIndex primary[], SecondaryIndex secondary[])
+	bool Remove(std::string usn, PrimaryIndex primary[], SecondaryIndex secondary[])
 	{
 		
 		int position = 0, secondaryPosition = 0 , i = 0;
@@ -86,7 +86,7 @@ public:
 		}
 		if (secondary[secondaryPosition].GetStudentName() == secondaryKey)
 		{
-			position = Search(usn);
+			position = Search(usn,primary);
 			stdFile.seekp(atoi(primary[position].GetAddress().c_str()), std::ios::beg);
 			stdFile.put('$');
 			for (i = position; i < indexSize; i++)
@@ -101,7 +101,7 @@ public:
 			return false;
 	}
 
-	std::list <int> GetPrimaryIndex(char* studentName, SecondaryIndex secondary[])
+	std::list <int> SecondaryDataDisplay(std::string studentName, SecondaryIndex secondary[])
 	{
 		int i, j, index = -1;
 		std::list <int> listOfPos;
@@ -122,7 +122,7 @@ public:
 		return listOfPos;
 	}
 
-	std::list <int> SecondarySearch(char* studentName, SecondaryIndex secondary[])
+	std::list <int> SDataDisplay(std::string studentName, SecondaryIndex secondary[])
 	{
 		int j;
 		std::list <int> listOfPos;
@@ -195,5 +195,20 @@ public:
 		for (i = 0; i < sIndexSize; i++)
 			sIndexFile << secondary[i].GetStudentName() << '|' << secondary[i].GetStudentUsn() << "\n";
 	}
+
+	bool isUSNDuplicate(std::string studentUSN,PrimaryIndex primary[])
+	{
+		
+		bool search;
+		search = Search(studentUSN, primary);
+		if ( search >= 0)
+		{
+			return false;
+		}
+
+	}
+
+	
+
 };
 #endif

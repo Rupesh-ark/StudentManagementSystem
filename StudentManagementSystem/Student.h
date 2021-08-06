@@ -37,8 +37,6 @@ class Student
 {
 private:
 
-	//char usn[11], studentName[22], dob[11], gender[7], sem[2], phNo[11];
-
 	std::string usn, studentName, phno;
 	Date dob;
 	Gender gender;
@@ -228,15 +226,119 @@ public:
 
 	Gender TextToGender(std::string gender)
 	{
-		if (gender == "Male")
+		if ((gender == "Male") || (gender == "male"))
 			return Gender::Male;
-		else if (gender == "Female")
+		else if (gender == "Female" || gender == "female")
 			return Gender::Female;
-		else if (gender == "Others")
+		else if (gender == "Others" || gender == "others")
 			return Gender::Others;
 		else
 			return Gender::NotSet;
 	}
+
+	bool isUSNValid(std::string studentUSN)
+	{
+		int search, i, count = 0;
+
+		for (i = 0; studentUSN[i] != '\0'; i++)
+		{
+			count++;
+			if (!isalpha(studentUSN[i]) || !isdigit(studentUSN[i] != 0))
+			{
+				return false;
+			}
+		}
+
+		if (studentUSN.size() > 10)
+			return false;
+	}
+
+
+	bool isNameValid(std::string studentName)
+	{
+		int i = 0;
+		for (i = 0; studentName[i] != '\0'; i++)
+		{
+			if (!isalpha(studentName[i]))
+			{
+				return false;
+			}
+		}
+	}
+
+	bool isPhoneValid(std::string phno)
+	{
+		int i;
+
+		for (i = 0; phno[i] != '\0'; i++)
+		{
+			if (!isdigit(phno[i]))
+			{
+				return false;
+			}
+		}
+		if (phno.size() > 10)
+			return false;
+	}
+
+	bool isDobValid(Date date)
+	{
+
+		if (date.Day > 31 || date.Day <= 0)
+			return false;
+		if (date.Month > 12 || date.Month <=0)
+			return false;
+		if (date.Year < 1970 || date.Year >= 2005)
+			return false;
+		else
+			return true;
+	}
+
+	void Read()
+	{
+		bool flag;
+		std::string inputBuffer;
+		do {
+
+			if (flag)
+			{
+				std::cout << "You entered invalid/duplicate usn, please try again.";
+			}
+			std::cout << "Please Enter Valid USN: ";
+			std::cin >> inputBuffer;
+			flag = isUSNValid(inputBuffer);
+		} while (!flag);
+
+		SetUSN(inputBuffer);
+
+		do {
+
+			if (flag)
+			{
+				std::cout << "You entered invalid name, please try again.";
+			}
+			std::cout << "Please Enter Valid Name: ";
+			std::cin >> inputBuffer;
+			flag = isNameValid(inputBuffer);
+		} while (!flag);
+
+		SetStudentName(inputBuffer);
+
+		do {
+
+			if (flag)
+			{
+				std::cout << "You entered invalid dob, please try again.";
+			}
+			std::cout << "Please Enter Valid dob(DD/MM/YYYY): ";
+			std::cin >> inputBuffer;
+			flag = isDobValid(TextToDate(inputBuffer));
+		} while (!flag);
+
+		SetDob(TextToDate(inputBuffer));
+
+	}
+
 
 	void Pack(std::string variableBuffer)
 	{
@@ -278,16 +380,6 @@ public:
 		std::getline(stdfile, phno, '|');
 
 		stdfile.getline(leftoverBuffer, 62, '\n');
-
-	/*	stdfile.getline(usn, 11, '|');
-		stdfile.getline(studentName, 22, '|');
-
-		stdfile.getline(dob, 11, '|');
-		
-		stdfile.getline(gender, 7, '|');
-		
-		stdfile.getline(sem, 2, '|');
-		stdfile.getline(phNo, 11, '|');*/
 		
 	}
 	
@@ -295,7 +387,6 @@ public:
 	{
 		
 	}
-
 
 };
 
