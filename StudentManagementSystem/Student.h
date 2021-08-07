@@ -204,21 +204,21 @@ public:
 
 	Sem TextToSem(std::string pTextSem)
 	{		
-		if (pTextSem == "First")
+		if ((pTextSem == "First") || (pTextSem == "first"))
 			return Sem::First;
-		else if (pTextSem == "Second")
+		else if ((pTextSem == "Second") || (pTextSem == "second"))
 			return Sem::Second;
-		else if (pTextSem == "Third")
+		else if ((pTextSem == "Third") || (pTextSem == "third"))
 			return Sem::Third;
-		else if (pTextSem == "Fourth")
+		else if ((pTextSem == "Fourth") || (pTextSem == "fourth"))
 			return Sem::Fourth;
-		else if (pTextSem == "Fifth")
+		else if ((pTextSem == "Fifth") || (pTextSem == "fifth"))
 			return Sem::Fifth;
-		else if (pTextSem == "Sixth")
+		else if ((pTextSem == "Sixth") || (pTextSem == "sixth"))
 			return Sem::Sixth;
-		else if (pTextSem == "Seventh")
+		else if ((pTextSem == "Seventh")||(pTextSem == "seventh"))
 			return Sem::Seventh;
-		else if (pTextSem == "Eight")
+		else if ((pTextSem == "Eight")||(pTextSem == "eight"))
 			return Sem::Eight;
 		else
 			return Sem::NotSet;
@@ -294,15 +294,36 @@ public:
 			return true;
 	}
 
+	bool isGenderValid(std::string gender)
+	{
+		Gender gen;
+		gen = TextToGender(gender);
+
+		if (gen == Gender::NotSet)
+			return false;
+		else
+			return true;
+	}
+
+	bool isSemValid(std::string semester)
+	{
+		Sem sem;
+		sem = TextToSem(semester);
+		if (sem == Sem::NotSet)
+			return false;
+		else
+			return true;
+	}
+
 	void Read()
 	{
-		bool flag;
+		bool flag = false;
 		std::string inputBuffer;
 		do {
 
-			if (flag)
+			if (!flag)
 			{
-				std::cout << "You entered invalid/duplicate usn, please try again.";
+				std::cout << "You entered invalid/duplicate usn, please try again."<<std::endl;
 			}
 			std::cout << "Please Enter Valid USN: ";
 			std::cin >> inputBuffer;
@@ -310,12 +331,12 @@ public:
 		} while (!flag);
 
 		SetUSN(inputBuffer);
-
+		flag = true;
 		do {
 
-			if (flag)
+			if (!flag)
 			{
-				std::cout << "You entered invalid name, please try again.";
+				std::cout << "You entered invalid name, please try again."<< std::endl;
 			}
 			std::cout << "Please Enter Valid Name: ";
 			std::cin >> inputBuffer;
@@ -323,12 +344,13 @@ public:
 		} while (!flag);
 
 		SetStudentName(inputBuffer);
-
+		flag = true;
+		
 		do {
 
-			if (flag)
+			if (!flag)
 			{
-				std::cout << "You entered invalid dob, please try again.";
+				std::cout << "You entered invalid dob, please try again." << std::endl;
 			}
 			std::cout << "Please Enter Valid dob(DD/MM/YYYY): ";
 			std::cin >> inputBuffer;
@@ -336,6 +358,31 @@ public:
 		} while (!flag);
 
 		SetDob(TextToDate(inputBuffer));
+		flag = true;
+		
+		do {
+			
+			if (!flag)
+			{
+				std::cout << "You have entered invalid gender, please try again." << std::endl;
+			}
+			std::cout << "Please Enter Valid Gender:";
+			std::cin >> inputBuffer;
+			flag = isGenderValid(inputBuffer);
+		} while (!flag);
+
+		SetGender(TextToGender(inputBuffer));
+		flag = true;
+
+		do {
+			if (!flag)
+			{
+				std::cout << "You have entered invalid semester, please try again." << std::endl;
+			}
+			std::cout << "Please Enter Valid Semester:";
+			std::cin >> inputBuffer;
+			flag = isSemValid(inputBuffer);
+		} while (!flag);
 
 	}
 
