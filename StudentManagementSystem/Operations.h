@@ -8,6 +8,7 @@
 #define PHNSTD 10
 #define SEMONE 49
 #define SEMEIGHT 56
+#define MAXINDICES 50
 #include<iomanip>
 #include<stdlib.h>
 #include<iostream>
@@ -20,40 +21,56 @@
 #include"PrimaryIndex.h"
 #include"SecondaryIndex.h"
 
-
 class Operations
 {
 private:
 
-	char variableBuffer[100], secondaryKey[20];
 	std::fstream stdFile, indexFile, sIndexFile;
+	PrimaryIndex primary[MAXINDICES];
+	SecondaryIndex secondary[MAXINDICES];
+	std::string variableBuffer;
 	int indexSize, sIndexSize;
-
 
 public:
 
-	int getIndexSize()
+	Operations()
+	{
+		indexSize = 0;
+		sIndexSize = 0;
+		variableBuffer = "";
+	}
+
+	int GetIndexSize()
 	{
 		return indexSize;
 	}
 
-	int getSecondaryIndexSize()
+	int GetSecondaryIndexSize()
 	{
 		return sIndexSize;
 	}
 
-	bool Opener(std::fstream& file, const char* fn, int mode)
+	void SetVariableBuffer(std::string pVariableBuffer)
 	{
-		file.open(fn, mode);
-		if (!file)
-			return false;
-		
-		else
-			return true;
-		
+		variableBuffer = pVariableBuffer;
 	}
 
-	int Search(std::string fid, PrimaryIndex primary[])
+	std::string GetVariableBuffer()
+	{
+		return variableBuffer;
+	}
+
+	bool Opener(std::fstream& file, const char* fileName, int mode)
+	{
+		file.open(fileName, mode);
+		if (!file)
+			return false;
+
+		else
+			return true;
+	}
+
+	int Search(std::string fid)
 	{
 		int low = 0, high = indexSize - 1;
 		int middle;
@@ -70,10 +87,9 @@ public:
 		return -1;
 	}
 
-	bool Remove(std::string usn, PrimaryIndex primary[], SecondaryIndex secondary[])
+	bool Remove(std::string usn, std::string secondaryKey)
 	{
-		
-		int position = 0, secondaryPosition = 0 , i = 0;
+		int position = 0, secondaryPosition = 0, i = 0;
 		std::string tempAddress;
 
 		for (i = 0; i < sIndexSize; i++)
@@ -86,7 +102,7 @@ public:
 		}
 		if (secondary[secondaryPosition].GetStudentName() == secondaryKey)
 		{
-			position = Search(usn,primary);
+			position = Search(usn);
 			stdFile.seekp(atoi(primary[position].GetAddress().c_str()), std::ios::beg);
 			stdFile.put('$');
 			for (i = position; i < indexSize; i++)
@@ -101,15 +117,15 @@ public:
 			return false;
 	}
 
-	std::list <int> SecondaryDataDisplay(std::string studentName, SecondaryIndex secondary[])
+	std::list <int> SecondaryIndexList(std::string studentName)
 	{
-		int i, j, index = -1;
+		int j, index = -1;
 		std::list <int> listOfPos;
 		bool open;
 		std::cout << "\n\t\t" << studentName << ":";
 		open = Opener(sIndexFile, SINDEXDIREC, std::ios::in);
-		if(open)
-		{ 
+		if (open)
+		{
 			for (j = 0; j < sIndexSize; j++)
 			{
 				if (studentName == secondary[j].GetStudentName())
@@ -122,11 +138,11 @@ public:
 		return listOfPos;
 	}
 
-	std::list <int> SDataDisplay(std::string studentName, SecondaryIndex secondary[])
+	std::list <int> SecondaryDataDisplay(std::string studentName)
 	{
 		int j;
 		std::list <int> listOfPos;
-		Opener(stdFile,DATADIREC, std::ios::in | std::ios::out);
+		Opener(stdFile, DATADIREC, std::ios::in | std::ios::out);
 		for (j = 0; j < sIndexSize; j++)
 			if (studentName == secondary[j].GetStudentName())
 			{
@@ -136,7 +152,7 @@ public:
 		return listOfPos;
 	}
 
-	void InitializeIndex(std::fstream& indexFile, PrimaryIndex primary[])
+	void InitializeIndex()
 	{
 		std::string tempUsn, tempAddress;
 		indexFile.open(INDEXDIREC, std::ios::in);
@@ -159,7 +175,7 @@ public:
 		indexFile.close();
 	}
 
-	void InitializeSIndex(std::fstream& sIndexFile, SecondaryIndex secondary[])
+	void InitializeSIndex()
 	{
 		std::string tempName, tempUsn;
 		sIndexFile.open(SINDEXDIREC, std::ios::in);
@@ -180,35 +196,73 @@ public:
 		sIndexFile.close();
 	}
 
-	void IndexWrite(PrimaryIndex primary[])
+	void UpdateIndexes(int pos, std::string usn, std::string name)
 	{
-		int i;
-		Opener(indexFile, INDEXDIREC, std::ios::out);
-		for (i = 0; i < indexSize; i++)
-			indexFile << primary[i].GetUsn() << '|' << primary[i].GetAddress() << "\n";
-	}
+		int i = 0;
 
-	void SIndexWrite(SecondaryIndex secondary[])
-	{
-		int i;
-		Opener(sIndexFile, SINDEXDIREC, std::ios::out);
-		for (i = 0; i < sIndexSize; i++)
-			sIndexFile << secondary[i].GetStudentName() << '|' << secondary[i].GetStudentUsn() << "\n";
-	}
-
-	bool isUSNDuplicate(std::string studentUSN,PrimaryIndex primary[])
-	{
-		
-		bool search;
-		search = Search(studentUSN, primary);
-		if ( search >= 0)
+		for (i = indexSize; i > 0; i--)
 		{
-			return false;
+			if (usn < primary[i - 1].GetUsn())
+				primary[i] = primary[i - 1];
+			else
+				break;
+		}
+		primary[i].SetUsn(usn);
+		primary[i].SetAddress(std::to_string(pos));
+		indexSize++;
+		for (i = indexSize; i > 0; i--)
+		{
+			if (secondary[i - 1].GetStudentName() == name)
+				secondary[i] = secondary[i - 1];
+
+
+			
 		}
 
 	}
 
-	
+	int DataWrite(std::string usn)
+	{
+		int pos = 0;
 
+		Opener(stdFile, DATADIREC, std::ios::out);
+		stdFile.seekg(0, std::ios::end);
+		pos = stdFile.tellg();
+		stdFile << variableBuffer << std::endl;
+		
+		return pos;
+
+	}
+
+
+	void IndexWrite()
+	{
+		Opener(indexFile, INDEXDIREC, std::ios::out);
+		for (int i = 0; i < indexSize; i++)
+			indexFile << primary[i].GetUsn() << '|' << primary[i].GetAddress() << "\n";
+	}
+
+	void SIndexWrite()
+	{
+	
+		Opener(sIndexFile, SINDEXDIREC, std::ios::out);
+		for (int i = 0; i < sIndexSize; i++)
+			sIndexFile << secondary[i].GetStudentName() << '|' << secondary[i].GetStudentUsn() << "\n";
+	}
+
+	bool isUSNDuplicate(std::string USN)
+	{
+		int search;
+
+		search = Search(USN);
+		if (search != -1)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 };
 #endif

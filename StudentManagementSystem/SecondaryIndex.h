@@ -16,7 +16,6 @@ public:
 	void SetStudentUsn(std::string);
 };
 
-
 SecondaryIndex::SecondaryIndex()
 {
 	studentName = "";
@@ -43,8 +42,5 @@ void SecondaryIndex::SetStudentUsn(std::string pStudentUsn)
 {
 	studentUsn = pStudentUsn;
 }
-
-
-
 
 #endif

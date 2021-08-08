@@ -7,7 +7,7 @@
 class PrimaryIndex
 {
 private:
-	
+
 	std::string usn, address;
 
 public:
@@ -18,15 +18,12 @@ public:
 	std::string GetAddress();
 	void SetUsn(std::string usn);
 	void SetAddress(std::string usn);
-
 };
 
 PrimaryIndex::PrimaryIndex()
 {
-
 	usn = "";
 	address = "";
-
 }
 
 std::string PrimaryIndex::GetUsn()
@@ -49,16 +46,8 @@ void PrimaryIndex::SetAddress(std::string pAddress)
 	address = pAddress;
 }
 
-
-
 PrimaryIndex::~PrimaryIndex()
 {
-
-
 }
-
-
-
-
 
 #endif

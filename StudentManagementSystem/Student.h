@@ -1,9 +1,7 @@
 #pragma once
 #ifndef STUDENT_H
 #define STUDENT_H
-#include<fstream>
-#include<stdlib.h>
-#include<string>
+#include"Operations.h"
 
 enum class Gender
 {
@@ -44,6 +42,8 @@ private:
 
 public:
 
+	Operations operation;
+
 	Student()
 	{
 		usn = "";
@@ -77,7 +77,7 @@ public:
 	{
 		return studentName;
 	}
-	
+
 	void SetUSN(std::string pUsn)
 	{
 		usn = pUsn;
@@ -178,7 +178,7 @@ public:
 		}
 		day[i] = '\0';
 		j++;
-		
+
 		for (i = 0; i < 2; i++)
 		{
 			month[i] = pTextDate[j];
@@ -186,24 +186,23 @@ public:
 		}
 		j++;
 		month[i] = '\0';
-	
+
 		for (i = 0; i < 4; i++)
 		{
 			year[i] = pTextDate[j];
 			j++;
 		}
 		year[j] = '\0';
-	
+
 		date.Day = std::atoi(day);
 		date.Month = std::atoi(month);
 		date.Year = std::atoi(year);
 
 		return date;
-		
 	}
 
 	Sem TextToSem(std::string pTextSem)
-	{		
+	{
 		if ((pTextSem == "First") || (pTextSem == "first"))
 			return Sem::First;
 		else if ((pTextSem == "Second") || (pTextSem == "second"))
@@ -216,9 +215,9 @@ public:
 			return Sem::Fifth;
 		else if ((pTextSem == "Sixth") || (pTextSem == "sixth"))
 			return Sem::Sixth;
-		else if ((pTextSem == "Seventh")||(pTextSem == "seventh"))
+		else if ((pTextSem == "Seventh") || (pTextSem == "seventh"))
 			return Sem::Seventh;
-		else if ((pTextSem == "Eight")||(pTextSem == "eight"))
+		else if ((pTextSem == "Eight") || (pTextSem == "eight"))
 			return Sem::Eight;
 		else
 			return Sem::NotSet;
@@ -238,21 +237,21 @@ public:
 
 	bool isUSNValid(std::string studentUSN)
 	{
-		int search, i, count = 0;
+		int i = 0, size = 0;
 
 		for (i = 0; studentUSN[i] != '\0'; i++)
 		{
-			count++;
 			if (!isalpha(studentUSN[i]) || !isdigit(studentUSN[i] != 0))
 			{
 				return false;
 			}
 		}
-
-		if (studentUSN.size() > 10)
+		size = studentUSN.size();
+		if (size != 10)
 			return false;
+		else
+			return true;
 	}
-
 
 	bool isNameValid(std::string studentName)
 	{
@@ -264,6 +263,7 @@ public:
 				return false;
 			}
 		}
+		return true;
 	}
 
 	bool isPhoneValid(std::string phno)
@@ -283,10 +283,9 @@ public:
 
 	bool isDobValid(Date date)
 	{
-
 		if (date.Day > 31 || date.Day <= 0)
 			return false;
-		if (date.Month > 12 || date.Month <=0)
+		if (date.Month > 12 || date.Month <= 0)
 			return false;
 		if (date.Year < 1970 || date.Year >= 2005)
 			return false;
@@ -317,26 +316,24 @@ public:
 
 	void Read()
 	{
-		bool flag = false;
+		bool flag = true;
 		std::string inputBuffer;
 		do {
-
 			if (!flag)
 			{
-				std::cout << "You entered invalid/duplicate usn, please try again."<<std::endl;
+				std::cout << "You entered invalid/duplicate usn, please try again: " << std::endl;
 			}
 			std::cout << "Please Enter Valid USN: ";
 			std::cin >> inputBuffer;
-			flag = isUSNValid(inputBuffer);
+			flag = isUSNValid(inputBuffer) && operation.isUSNDuplicate(inputBuffer);
 		} while (!flag);
 
 		SetUSN(inputBuffer);
 		flag = true;
 		do {
-
 			if (!flag)
 			{
-				std::cout << "You entered invalid name, please try again."<< std::endl;
+				std::cout << "You entered invalid name, please try again." << std::endl;
 			}
 			std::cout << "Please Enter Valid Name: ";
 			std::cin >> inputBuffer;
@@ -345,9 +342,8 @@ public:
 
 		SetStudentName(inputBuffer);
 		flag = true;
-		
-		do {
 
+		do {
 			if (!flag)
 			{
 				std::cout << "You entered invalid dob, please try again." << std::endl;
@@ -359,9 +355,8 @@ public:
 
 		SetDob(TextToDate(inputBuffer));
 		flag = true;
-		
+
 		do {
-			
 			if (!flag)
 			{
 				std::cout << "You have entered invalid gender, please try again." << std::endl;
@@ -383,15 +378,25 @@ public:
 			std::cin >> inputBuffer;
 			flag = isSemValid(inputBuffer);
 		} while (!flag);
-
 	}
 
 
-	void Pack(std::string variableBuffer)
+	void Update()
 	{
+		bool flag;
+		std::string tempName;
+		std::list <int> usnPosList;
+		std::cout << "\nEnter student name for which you want to update the data: ";
+		std::cin >> tempName;
+		usnPosList = operation.SecondaryIndexList(tempName);
+		do {
+		} while (true);
+	}
 
-
-		variableBuffer += usn; 
+	void Pack()
+	{
+		std::string variableBuffer;
+		variableBuffer += usn;
 		variableBuffer += "|";
 		variableBuffer += studentName;
 		variableBuffer += "|";
@@ -403,10 +408,9 @@ public:
 		variableBuffer += "|";
 		variableBuffer += phno;
 		variableBuffer += "|";
-
-	
+		operation.SetVariableBuffer(variableBuffer);
 	}
-	
+
 	void Unpack(std::fstream& stdfile)
 	{
 		char leftoverBuffer[62];
@@ -427,14 +431,11 @@ public:
 		std::getline(stdfile, phno, '|');
 
 		stdfile.getline(leftoverBuffer, 62, '\n');
-		
-	}
-	
-	~Student()
-	{
-		
 	}
 
+	~Student()
+	{
+	}
 };
 
 #endif
