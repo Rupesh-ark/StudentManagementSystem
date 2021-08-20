@@ -1,7 +1,8 @@
 #pragma once
 #ifndef STUDENT_H
 #define STUDENT_H
-#include"Operations.h"
+#include<string>
+//#include"Operations.h"
 
 enum class Gender
 {
@@ -42,8 +43,6 @@ private:
 
 public:
 
-	Operations operation;
-
 	Student()
 	{
 		usn = "";
@@ -76,6 +75,26 @@ public:
 	std::string GetName()
 	{
 		return studentName;
+	}
+
+	Date GetDOB()
+	{
+		return dob;
+	}
+
+	Gender GetGender()
+	{
+		return gender;
+	}
+
+	Sem GetSem()
+	{
+		return sem;
+	}
+
+	std::string GetPhone()
+	{
+		return phno;
 	}
 
 	void SetUSN(std::string pUsn)
@@ -111,8 +130,12 @@ public:
 	std::string DateToText(Date pDate)
 	{
 		std::string dateText = "";
+		if (pDate.Day < 9)
+			dateText += "0";
 		dateText += std::to_string(pDate.Day);
 		dateText += '/';
+		if (pDate.Month < 9)
+			dateText += "0";
 		dateText += std::to_string(pDate.Month);
 		dateText += '/';
 		dateText += std::to_string(pDate.Year);
@@ -133,7 +156,7 @@ public:
 		case Gender::NotSet:
 			return "NotSet";
 		default:
-			break;
+			return "";
 		}
 	}
 
@@ -160,44 +183,28 @@ public:
 		case Sem::NotSet:
 			return "Not Set";
 		default:
-			break;
+			return "";
 		}
 	}
 
 	Date TextToDate(std::string pTextDate)
 	{
 		Date date;
+		date.Day = 0;
+		date.Month = 0;
+		date.Year = 0;
 		int j = 0, i = 0;
 
-		char day[3], month[3], year[5];
+		std::string day, month, year;
 
-		for (i = 0; i < 2; i++)
-		{
-			day[i] = pTextDate[j];
-			j++;
-		}
-		day[i] = '\0';
-		j++;
+		day = pTextDate.substr(0, 2);
 
-		for (i = 0; i < 2; i++)
-		{
-			month[i] = pTextDate[j];
-			j++;
-		}
-		j++;
-		month[i] = '\0';
+		month = pTextDate.substr(3, 5);
+		year = pTextDate.substr(6, 9);
 
-		for (i = 0; i < 4; i++)
-		{
-			year[i] = pTextDate[j];
-			j++;
-		}
-		year[j] = '\0';
-
-		date.Day = std::atoi(day);
-		date.Month = std::atoi(month);
-		date.Year = std::atoi(year);
-
+		date.Day = std::atoi(day.c_str());
+		date.Month = std::atoi(month.c_str());
+		date.Year = std::atoi(year.c_str());
 		return date;
 	}
 
@@ -237,17 +244,17 @@ public:
 
 	bool isUSNValid(std::string studentUSN)
 	{
-		int i = 0, size = 0;
+		int i = 0;
 
 		for (i = 0; studentUSN[i] != '\0'; i++)
 		{
-			if (!isalpha(studentUSN[i]) || !isdigit(studentUSN[i] != 0))
+			if (!isalpha(studentUSN[i]) && !isdigit(studentUSN[i]))
 			{
 				return false;
 			}
 		}
-		size = studentUSN.size();
-		if (size != 10)
+
+		if (studentUSN.size() != 10)
 			return false;
 		else
 			return true;
@@ -279,6 +286,8 @@ public:
 		}
 		if (phno.size() > 10)
 			return false;
+		else
+			return true;
 	}
 
 	bool isDobValid(Date date)
@@ -312,125 +321,6 @@ public:
 			return false;
 		else
 			return true;
-	}
-
-	void Read()
-	{
-		bool flag = true;
-		std::string inputBuffer;
-		do {
-			if (!flag)
-			{
-				std::cout << "You entered invalid/duplicate usn, please try again: " << std::endl;
-			}
-			std::cout << "Please Enter Valid USN: ";
-			std::cin >> inputBuffer;
-			flag = isUSNValid(inputBuffer) && operation.isUSNDuplicate(inputBuffer);
-		} while (!flag);
-
-		SetUSN(inputBuffer);
-		flag = true;
-		do {
-			if (!flag)
-			{
-				std::cout << "You entered invalid name, please try again." << std::endl;
-			}
-			std::cout << "Please Enter Valid Name: ";
-			std::cin >> inputBuffer;
-			flag = isNameValid(inputBuffer);
-		} while (!flag);
-
-		SetStudentName(inputBuffer);
-		flag = true;
-
-		do {
-			if (!flag)
-			{
-				std::cout << "You entered invalid dob, please try again." << std::endl;
-			}
-			std::cout << "Please Enter Valid dob(DD/MM/YYYY): ";
-			std::cin >> inputBuffer;
-			flag = isDobValid(TextToDate(inputBuffer));
-		} while (!flag);
-
-		SetDob(TextToDate(inputBuffer));
-		flag = true;
-
-		do {
-			if (!flag)
-			{
-				std::cout << "You have entered invalid gender, please try again." << std::endl;
-			}
-			std::cout << "Please Enter Valid Gender:";
-			std::cin >> inputBuffer;
-			flag = isGenderValid(inputBuffer);
-		} while (!flag);
-
-		SetGender(TextToGender(inputBuffer));
-		flag = true;
-
-		do {
-			if (!flag)
-			{
-				std::cout << "You have entered invalid semester, please try again." << std::endl;
-			}
-			std::cout << "Please Enter Valid Semester:";
-			std::cin >> inputBuffer;
-			flag = isSemValid(inputBuffer);
-		} while (!flag);
-	}
-
-
-	void Update()
-	{
-		bool flag;
-		std::string tempName;
-		std::list <int> usnPosList;
-		std::cout << "\nEnter student name for which you want to update the data: ";
-		std::cin >> tempName;
-		usnPosList = operation.SecondaryIndexList(tempName);
-		do {
-		} while (true);
-	}
-
-	void Pack()
-	{
-		std::string variableBuffer;
-		variableBuffer += usn;
-		variableBuffer += "|";
-		variableBuffer += studentName;
-		variableBuffer += "|";
-		variableBuffer += DateToText(dob);
-		variableBuffer += "|";
-		variableBuffer += GenderToText(gender);
-		variableBuffer += "|";
-		variableBuffer += SemToText(sem);
-		variableBuffer += "|";
-		variableBuffer += phno;
-		variableBuffer += "|";
-		operation.SetVariableBuffer(variableBuffer);
-	}
-
-	void Unpack(std::fstream& stdfile)
-	{
-		char leftoverBuffer[62];
-
-		std::string textDob, textGender, textSem;
-
-		std::getline(stdfile, usn, '|');
-		std::getline(stdfile, studentName, '|');
-		std::getline(stdfile, textDob, '|');
-
-		dob = TextToDate(textDob);
-		std::getline(stdfile, textGender, '|');
-
-		gender = TextToGender(textGender);
-		std::getline(stdfile, textSem, '|');
-
-		sem = TextToSem(textSem);
-		std::getline(stdfile, phno, '|');
-
-		stdfile.getline(leftoverBuffer, 62, '\n');
 	}
 
 	~Student()

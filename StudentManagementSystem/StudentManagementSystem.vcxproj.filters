@@ -35,5 +35,8 @@
     <ClInclude Include="SecondaryIndex.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="StudentManagement.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

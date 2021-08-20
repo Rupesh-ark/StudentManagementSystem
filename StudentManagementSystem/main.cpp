@@ -1,15 +1,15 @@
 #include"MenuOptions.h"
-#include"Student.h"
+#include"StudentManagement.h"
 
 int main()
 {
 	int initialChoice = 0, mainMenuChoice = 0, recordsMenuChoice = 0, indexMenuChoice = 0;
 	bool invalidFlag = false, repeatFlag = false;
 	MenuOptions menu;
-	Student student;
+	StudentManagement sm;
 
-	student.operation.InitializeIndex();
-
+	sm.operation.InitializeIndex();
+	sm.operation.InitializeSIndex();
 	do {
 		menu.MainMenuOptions();
 		std::cin >> initialChoice;
@@ -24,13 +24,32 @@ int main()
 			{
 			case nRecordMenuOptions::Insert: {
 				system("cls");
-				student.Read();
-				student.operation.IndexWrite();
-				student.operation.SIndexWrite();
+				sm.Read();
 				break;
 			}
 			case nRecordMenuOptions::Update: {
 				system("cls");
+				sm.Update();
+				break;
+			}
+
+			case nRecordMenuOptions::Display: {
+				system("cls");
+				sm.Display();
+				std::cin.get();
+				break;
+			}
+
+			case nRecordMenuOptions::Delete: {
+				system("cls");
+				sm.DeleteStudent();
+				break;
+			}
+
+			case nRecordMenuOptions::backToMM: {
+				system("cls");
+				menu.MainMenuOptions();
+				break;
 			}
 
 			default: {
@@ -43,6 +62,28 @@ int main()
 		case nMainMenuOptions::indexing:do
 		{
 			menu.IndexMenuOptions();
+			std::cin >> indexMenuChoice;
+			switch (indexMenuChoice)
+			{
+			case nIndexMenuOptions::simpleIndex:
+				sm.Indexing();
+				break;
+			case nIndexMenuOptions::secondaryIndex: {
+				sm.SecondaryIndexing();
+				break;
+			}
+			case nIndexMenuOptions::invertedList: {
+				sm.InvertedList();
+				break;
+			}
+			case nIndexMenuOptions::backTOMMTwo: {
+				menu.MainMenuOptions();
+				break;
+			}
+			default:
+				std::cout << "Wrong choice please enter again";
+				break;
+			}
 		} while (indexMenuChoice != nIndexMenuOptions::backTOMMTwo);
 		case nMainMenuOptions::exitMM:
 		{
