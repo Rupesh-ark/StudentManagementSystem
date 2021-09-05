@@ -51,7 +51,7 @@ public:
 		dob_.month = 0;
 		dob_.year = 0;
 		gen_ = gender::not_set;
-		sem_  = semester::not_set;
+		sem_ = semester::not_set;
 		phone_number_ = "";
 	}
 
@@ -307,6 +307,5 @@ public:
 		else
 			return true;
 	}
-
 };
 #endif

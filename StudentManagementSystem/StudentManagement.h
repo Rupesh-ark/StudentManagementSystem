@@ -55,9 +55,7 @@ public:
 		std::getline(stdFile, phno, '|');
 		student.set_phone(phno);
 
-	//	std::getline(stdFile, leftoverBuffer, '\n');
-
-		
+		//	std::getline(stdFile, leftoverBuffer, '\n');
 	}
 
 	void read()
@@ -174,7 +172,7 @@ public:
 		std::cout << "\n";
 		std::cout << std::setw(10) << "USN" << std::setw(15) << "NAME" << std::setw(15) << "DOB" << std::setw(20) << "Gender" << std::setw(15) << "Semester" << std::setw(15) << "Phone" << std::endl;
 		while (!stdFile.eof())
-		{   
+		{
 			Unpack();
 			if (student.get_usn()[0] != '$')
 			{

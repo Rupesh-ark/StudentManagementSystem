@@ -2,7 +2,7 @@
 #ifndef OPERATIONS_H
 #define OPERATIONS_H
 constexpr auto index_directory = "index.txt";
-constexpr auto secondary_index_directory = "sIndex.txt";											
+constexpr auto secondary_index_directory = "sIndex.txt";
 constexpr auto data_directory = "data.txt";
 constexpr auto usn_std = 10;
 constexpr auto phn_std = 10;
@@ -26,7 +26,7 @@ private:
 
 	std::fstream std_file_, index_file_, s_index_file_;
 	primary_index primary_[max_indices];
-	secondary_index  secondary_[max_indices];
+	secondary_index secondary_[max_indices];
 	std::string variable_buffer_;
 	int index_size_, s_index_size_;
 
@@ -42,15 +42,18 @@ public:
 	primary_index* get_primary_at_pos(const int pos)
 	{
 		primary_index* primaryPointer = &primary_[pos];
+
 		return primaryPointer;
 	}
 
 	int GetIndexSize() const
+
 	{
 		return index_size_;
 	}
 
 	int get_secondary_index_size() const
+
 	{
 		return s_index_size_;
 	}
@@ -78,13 +81,14 @@ public:
 	int search(const std::string& fid) const
 	{
 		int low = 0, high = index_size_ - 1;
-		
+
 		while (low <= high)
 		{
 			const int middle = (low + high) / 2;
+
 			if (fid == primary_[middle].GetUsn())
 				return  middle;
-			else if (fid > primary_[middle].GetUsn())
+			if (fid > primary_[middle].GetUsn())
 				low = middle + 1;
 			else
 				high = middle - 1;
@@ -118,14 +122,14 @@ public:
 			s_index_size_--;
 			return true;
 		}
-		else
-			return false;
+		return false;
 	}
 
 	bool secondary_index_list(const std::string& student_name)
 	{
 		bool flag = false;
 		std::cout << "\n\t\t" << student_name << ":";
+
 		const bool open = opener(s_index_file_, secondary_index_directory, std::ios::in);
 		if (open)
 		{
@@ -134,6 +138,7 @@ public:
 				if (student_name == secondary_[j].get_student_name())
 				{
 					std::cout << secondary_[j].get_student_usn() << ":";
+
 					flag = true;
 				}
 			}
@@ -146,12 +151,14 @@ public:
 	{
 		bool flag = false;
 		std::list <int> listOfPos;
+
 		opener(std_file_, data_directory, std::ios::in | std::ios::out);
 		for (int j = 0; j < s_index_size_; j++)
 		{
 			if (studentName == secondary_[j].get_student_name())
 			{
 				std::cout << "\n" << "\t\t" << (j + 1) << "\t\t" << std::setw(15) << secondary_[j].get_student_usn() << std::setw(15) << secondary_[j].get_student_name() << std::endl;
+
 				flag = true;
 			}
 		}
@@ -164,6 +171,7 @@ public:
 		std::string tempUsn, tempAddress;
 		index_file_.open(index_directory, std::ios::in);
 		if (!index_file_)
+
 		{
 			index_size_ = 0;
 			return;
@@ -185,8 +193,10 @@ public:
 	void initialize_s_index()
 	{
 		std::string tempName, tempUsn;
+
 		s_index_file_.open(secondary_index_directory, std::ios::in);
 		if (!s_index_file_)
+
 		{
 			s_index_size_ = 0;
 			return;
@@ -198,6 +208,7 @@ public:
 			secondary_[index_size_].set_student_name(tempName);
 			secondary_[index_size_].set_student_usn(tempUsn);
 			if (s_index_file_.eof())
+
 				break;
 		}
 		s_index_file_.close();
@@ -206,12 +217,14 @@ public:
 	void DeleteModifier(const std::string& key, int search)
 	{
 		int i, secondaryPos = 0;
+
 		opener(std_file_, data_directory, std::ios::in | std::ios::out);
 		std_file_.seekp(atoi(primary_[search].GetAddress().c_str()), std::ios::beg);
 		std_file_.put('$');
 		for (i = search; i < index_size_; i++)
 		{
 			if (key == secondary_[i].get_student_usn())
+
 			{
 				secondaryPos = i;
 				break;
@@ -278,7 +291,6 @@ public:
 
 	bool is_usn_duplicate(const std::string& usn) const
 	{
-	
 		const int search_flag = search(usn);
 		if (search_flag != -1)
 		{

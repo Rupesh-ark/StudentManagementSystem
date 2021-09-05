@@ -83,6 +83,7 @@ int main()
 				break;
 			}
 		} while (index_menu_choice != n_index_menu_options::back_to_mm_two_options);
+
 		case n_main_menu_options::exit_mm:
 		{
 			std::exit(0);

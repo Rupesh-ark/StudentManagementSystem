@@ -1,4 +1,5 @@
 #pragma once
+
 #ifndef secondary_index_H
 #define secondary_index_H
 #include<string>

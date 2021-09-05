@@ -20,7 +20,7 @@ public:
 	void SetAddress(std::string p_address);
 };
 
-inline primary_index::primary_index() 
+inline primary_index::primary_index()
 {
 	usn = "";
 	address = "";
@@ -45,6 +45,5 @@ inline void primary_index::SetAddress(std::string p_address)
 {
 	address = std::move(p_address);
 }
-
 
 #endif
