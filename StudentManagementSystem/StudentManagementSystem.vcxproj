@@ -143,10 +143,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MenuOptions.h" />
-    <ClInclude Include="PrimaryIndex.h" />
-    <ClInclude Include="SecondaryIndex.h" />
+    <ClInclude Include="primary_index.h" />
+    <ClInclude Include="secondary_index.h" />
     <ClInclude Include="Student.h" />
-    <ClInclude Include="Operations.h" />
+    <ClInclude Include="operations.h" />
     <ClInclude Include="StudentManagement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

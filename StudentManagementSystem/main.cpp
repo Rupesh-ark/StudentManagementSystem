@@ -3,52 +3,50 @@
 
 int main()
 {
-	int initialChoice = 0, mainMenuChoice = 0, recordsMenuChoice = 0, indexMenuChoice = 0;
-	bool invalidFlag = false, repeatFlag = false;
-	MenuOptions menu;
-	StudentManagement sm;
+	int initial_choice = 0, records_menu_choice = 0, index_menu_choice = 0;
+	student_management sm;
 
-	sm.operation.InitializeIndex();
-	sm.operation.InitializeSIndex();
+	sm.operation.initialize_index();
+	sm.operation.initialize_s_index();
 	do {
-		menu.MainMenuOptions();
-		std::cin >> initialChoice;
+		menu_options::MainMenuOptions();
+		std::cin >> initial_choice;
 
-		switch (initialChoice)
+		switch (initial_choice)
 		{
-		case nMainMenuOptions::studentRecords:do
+		case n_main_menu_options::student_records:do
 		{
-			menu.RecordsMenuOptions();
-			std::cin >> recordsMenuChoice;
-			switch (recordsMenuChoice)
+			menu_options::RecordsMenuOptions();
+			std::cin >> records_menu_choice;
+			switch (records_menu_choice)
 			{
-			case nRecordMenuOptions::Insert: {
+			case n_record_menu_options::insert: {
 				system("cls");
-				sm.Read();
+				sm.read();
 				break;
 			}
-			case nRecordMenuOptions::Update: {
+			case n_record_menu_options::update: {
 				system("cls");
-				sm.Update();
+				sm.update();
 				break;
 			}
 
-			case nRecordMenuOptions::Display: {
+			case n_record_menu_options::display: {
 				system("cls");
-				sm.Display();
+				sm.display();
 				std::cin.get();
 				break;
 			}
 
-			case nRecordMenuOptions::Delete: {
+			case n_record_menu_options::delete_: {
 				system("cls");
-				sm.DeleteStudent();
+				sm.delete_student();
 				break;
 			}
 
-			case nRecordMenuOptions::backToMM: {
+			case n_record_menu_options::back_to_mm: {
 				system("cls");
-				menu.MainMenuOptions();
+				menu_options::MainMenuOptions();
 				break;
 			}
 
@@ -57,35 +55,35 @@ int main()
 				break;
 			}
 			}
-		} while (recordsMenuChoice != nRecordMenuOptions::backToMM);
+		} while (records_menu_choice != n_record_menu_options::back_to_mm);
 
-		case nMainMenuOptions::indexing:do
+		case n_main_menu_options::indexing:do
 		{
-			menu.IndexMenuOptions();
-			std::cin >> indexMenuChoice;
-			switch (indexMenuChoice)
+			menu_options::IndexMenuOptions();
+			std::cin >> index_menu_choice;
+			switch (index_menu_choice)
 			{
-			case nIndexMenuOptions::simpleIndex:
-				sm.Indexing();
+			case n_index_menu_options::simple_index:
+				sm.indexing();
 				break;
-			case nIndexMenuOptions::secondaryIndex: {
-				sm.SecondaryIndexing();
-				break;
-			}
-			case nIndexMenuOptions::invertedList: {
-				sm.InvertedList();
+			case n_index_menu_options::secondary_index: {
+				sm.secondary_indexing();
 				break;
 			}
-			case nIndexMenuOptions::backTOMMTwo: {
-				menu.MainMenuOptions();
+			case n_index_menu_options::inverted_list: {
+				sm.inverted_list();
+				break;
+			}
+			case n_index_menu_options::back_to_mm_two: {
+				menu_options::MainMenuOptions();
 				break;
 			}
 			default:
 				std::cout << "Wrong choice please enter again";
 				break;
 			}
-		} while (indexMenuChoice != nIndexMenuOptions::backTOMMTwo);
-		case nMainMenuOptions::exitMM:
+		} while (index_menu_choice != n_index_menu_options::back_to_mm_two);
+		case n_main_menu_options::exit_mm:
 		{
 			std::exit(0);
 		}
@@ -94,7 +92,7 @@ int main()
 			std::cout << "Wrong choice please enter again";
 			break;
 		}
-	} while (initialChoice != 3);
+	} while (initial_choice != 3);
 
 	return 0;
 }

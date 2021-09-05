@@ -4,34 +4,33 @@
 #include<iostream>
 #include<iomanip>
 
-enum nMainMenuOptions
+enum n_main_menu_options
 {
-	studentRecords = 1,
+	student_records = 1,
 	indexing = 2,
-	exitMM = 3
+	exit_mm = 3
 };
 
-enum nRecordMenuOptions
+enum n_record_menu_options
 {
-	Insert = 1,
-	Update = 2,
-	Display = 3,
-	Delete = 4,
-	backToMM = 5
+	insert = 1,
+	update = 2,
+	display = 3,
+	delete_ = 4,
+	back_to_mm = 5
 };
 
-enum nIndexMenuOptions
+enum n_index_menu_options
 {
-	simpleIndex = 1,
-	secondaryIndex = 2,
-	invertedList = 3,
-	backTOMMTwo = 4
+	simple_index = 1,
+	secondary_index = 2,
+	inverted_list = 3,
+	back_to_mm_two = 4
 };
 
-class MenuOptions {
+class menu_options {
 public:
-
-	void MainMenuOptions(int wLeftSpace = 80, int height = 6) {
+	static void MainMenuOptions(int wLeftSpace = 80, int height = 6) {
 		system("cls");
 		system("COLOR 1F");
 		for (int i = 0; i < height; i++)
@@ -49,7 +48,7 @@ public:
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **************************************************************************************\n ";
 	}
 
-	void RecordsMenuOptions(int wLeftSpace = 80, int height = 6) {
+	static void RecordsMenuOptions(int wLeftSpace = 80, int height = 6) {
 		system("cls");
 		system("COLOR 2F");
 		for (int i = 0; i < height; i++)
@@ -60,16 +59,16 @@ public:
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **      Insert                               ---->          choose  option '1'      **\n ";
-		std::cout << std::setw(wLeftSpace) << "\t\t\t  **      Update                               ---->          choose  option '2'      **\n ";
-		std::cout << std::setw(wLeftSpace) << "\t\t\t  **      Display                              ---->          choose  option '3'      **\n ";
-		std::cout << std::setw(wLeftSpace) << "\t\t\t  **      Delete                               ---->          choose  option '4'      **\n ";
+		std::cout << std::setw(wLeftSpace) << "\t\t\t  **      update                               ---->          choose  option '2'      **\n ";
+		std::cout << std::setw(wLeftSpace) << "\t\t\t  **      display                              ---->          choose  option '3'      **\n ";
+		std::cout << std::setw(wLeftSpace) << "\t\t\t  **      delete_                               ---->          choose  option '4'      **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **      Back                                 ---->          choose  option '5'      **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **                                                                                  **\n ";
 		std::cout << std::setw(wLeftSpace) << "\t\t\t  **************************************************************************************\n ";
 	}
 
-	void IndexMenuOptions(int wLeftSpace = 80, int height = 6) {
+	static void IndexMenuOptions(int wLeftSpace = 80, int height = 6) {
 		system("cls");
 		system("COLOR 5F");
 		for (int i = 0; i < height; i++)

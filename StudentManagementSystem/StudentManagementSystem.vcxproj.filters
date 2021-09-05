@@ -26,13 +26,13 @@
     <ClInclude Include="MenuOptions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Operations.h">
+    <ClInclude Include="operations.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="PrimaryIndex.h">
+    <ClInclude Include="primary_index.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="SecondaryIndex.h">
+    <ClInclude Include="secondary_index.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="StudentManagement.h">

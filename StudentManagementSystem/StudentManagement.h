@@ -1,30 +1,30 @@
 #pragma once
 #ifndef STUDENTMANAGEMENT_H
 #define STUDENTMANAGEMENT_H
-#include "Operations.h"
+#include "operations.h"
 #include "Student.h"
 
-class StudentManagement
+class student_management
 {
 private:
-
+	std::fstream stdFile;
 public:
 
-	Student student;
-	Operations operation;
+	student student;
+	operations operation;
 
-	std::string Pack()
+	std::string Pack() const
 	{
 		std::string variableBuffer;
-		variableBuffer += student.GetUsn();
+		variableBuffer += student.get_usn();
 		variableBuffer += "|";
-		variableBuffer += student.GetName();
+		variableBuffer += student.get_name();
 		variableBuffer += "|";
-		variableBuffer += student.DateToText(student.GetDOB());
+		variableBuffer += student.date_to_text(student.get_dob());
 		variableBuffer += "|";
-		variableBuffer += student.GenderToText(student.GetGender());
+		variableBuffer += student::gender_to_text(student.get_gender());
 		variableBuffer += "|";
-		variableBuffer += student.SemToText(student.GetSem());
+		variableBuffer += student::sem_to_text(student.get_sem());
 		variableBuffer += "|";
 		variableBuffer += student.GetPhone();
 		variableBuffer += "|";
@@ -32,54 +32,49 @@ public:
 		return variableBuffer;
 	}
 
-	void Unpack(std::fstream stdFile)
+	void Unpack()
 	{
-	
-
 		std::string leftoverBuffer;
-
 		std::string usn, studentName, textDob, textGender, textSem, phno;
 
-	
-
 		std::getline(stdFile, usn, '|');
-		student.SetUSN(usn);
+		student.set_usn(usn);
 
 		std::getline(stdFile, studentName, '|');
-		student.SetStudentName(studentName);
+		student.set_student_name(studentName);
 
 		std::getline(stdFile, textDob, '|');
-		student.SetDob(student.TextToDate(textDob));
+		student.set_dob(student::text_to_date(textDob));
 
 		std::getline(stdFile, textGender, '|');
-		student.SetGender(student.TextToGender(textGender));
+		student.set_gender(student::TextToGender(textGender));
 
 		std::getline(stdFile, textSem, '|');
-		student.SetSem(student.TextToSem(textSem));
+		student.set_sem(student::text_to_sem(textSem));
 
 		std::getline(stdFile, phno, '|');
-		student.SetPhone(phno);
+		student.set_phone(phno);
 
-		std::getline(stdFile, leftoverBuffer, '\n');
+	//	std::getline(stdFile, leftoverBuffer, '\n');
 
-		stdFile.close();
+		
 	}
 
-	void Read()
+	void read()
 	{
 		bool flag = true;
 		std::string inputBuffer;
 		do {
 			if (!flag)
 			{
-				std::cout << "You entered invalid/duplicate usn, please try again: " << std::endl;
+				std::cout << "You entered invalid/duplicate usn_, please try again: " << std::endl;
 			}
 			std::cout << "Please Enter Valid USN: ";
 			std::cin >> inputBuffer;
-			flag = student.isUSNValid(inputBuffer) && operation.isUSNDuplicate(inputBuffer);
+			flag = student::isUSNValid(inputBuffer) && operation.is_usn_duplicate(inputBuffer);
 		} while (!flag);
 
-		student.SetUSN(inputBuffer);
+		student.set_usn(inputBuffer);
 		flag = true;
 		do {
 			if (!flag)
@@ -88,10 +83,10 @@ public:
 			}
 			std::cout << "Please Enter Valid Name: ";
 			std::cin >> inputBuffer;
-			flag = student.isNameValid(inputBuffer);
+			flag = student::isNameValid(inputBuffer);
 		} while (!flag);
 
-		student.SetStudentName(inputBuffer);
+		student.set_student_name(inputBuffer);
 		flag = true;
 
 		do {
@@ -101,23 +96,23 @@ public:
 			}
 			std::cout << "Please Enter Valid dob(DD/MM/YYYY): ";
 			std::cin >> inputBuffer;
-			flag = student.isDobValid(student.TextToDate(inputBuffer));
+			flag = student::isDobValid(student::text_to_date(inputBuffer));
 		} while (!flag);
 
-		student.SetDob(student.TextToDate(inputBuffer));
+		student.set_dob(student::text_to_date(inputBuffer));
 		flag = true;
 
 		do {
 			if (!flag)
 			{
-				std::cout << "You have entered invalid gender, please try again." << std::endl;
+				std::cout << "You have entered invalid gen, please try again." << std::endl;
 			}
 			std::cout << "Please Enter Valid Gender:";
 			std::cin >> inputBuffer;
-			flag = student.isGenderValid(inputBuffer);
+			flag = student.is_gender_valid(inputBuffer);
 		} while (!flag);
 
-		student.SetGender(student.TextToGender(inputBuffer));
+		student.set_gender(student::TextToGender(inputBuffer));
 		flag = true;
 
 		do {
@@ -127,7 +122,7 @@ public:
 			}
 			std::cout << "Please Enter Valid Semester:";
 			std::cin >> inputBuffer;
-			flag = student.isSemValid(inputBuffer);
+			flag = student.is_sem_valid(inputBuffer);
 		} while (!flag);
 
 		flag = true;
@@ -139,54 +134,52 @@ public:
 			}
 			std::cout << "Please Enter Valid Phone Number:";
 			std::cin >> inputBuffer;
-			flag = student.isPhoneValid(inputBuffer);
+			flag = student::isPhoneValid(inputBuffer);
 		} while (!flag);
 
-		student.SetPhone(inputBuffer);
+		student.set_phone(inputBuffer);
 
-		operation.SetVariableBuffer(Pack());
-		operation.DataWrite(student.GetUsn(), student.GetName());
-		operation.IndexWrite();
-		operation.SIndexWrite();
+		operation.set_variable_buffer(Pack());
+		operation.DataWrite(student.get_usn(), student.get_name());
+		operation.index_write();
+		operation.s_index_write();
 	}
 
-	void Update()
+	void update()
 	{
-		int search;
 		std::string tempUSN;
 		std::list <int> usnPosList;
 		std::cout << "\nEnter student id for which you want to update the data: ";
 		std::cin >> tempUSN;
-		search = operation.Search(tempUSN);
+		const int search = operation.search(tempUSN);
 		if (search == -1)
 		{
 			std::cout << "\nRecord not found";
 		}
 		else
 		{
-			int i = 0;
 			operation.DeleteModifier(tempUSN, search);
-			Read();
+			read();
 		}
 		std::cin.get();
 	}
 
-	void Display()
+	void display()
 	{
 		int count = 0;
 		int max = operation.GetIndexSize();
-		std::fstream stdFile;
-		operation.Opener(stdFile, DATADIREC, std::ios::in);
+		operations::opener(stdFile, data_directory, std::ios::in);
 		stdFile.seekg(0, std::ios::beg);
 
 		std::cout << "\n";
 		std::cout << std::setw(10) << "USN" << std::setw(15) << "NAME" << std::setw(15) << "DOB" << std::setw(20) << "Gender" << std::setw(15) << "Semester" << std::setw(15) << "Phone" << std::endl;
 		while (!stdFile.eof())
 		{   
-				Unpack();
-			if (student.GetUsn()[0] != '$')
+			Unpack();
+			if (student.get_usn()[0] != '$')
 			{
-				std::cout << std::setw(10) << student.GetUsn() << std::setw(15) << student.GetName() << std::setw(15) << student.DateToText(student.GetDOB()) << std::setw(20) << student.GenderToText(student.GetGender()) << std::setw(15) << student.SemToText(student.GetSem()) << std::setw(15) << student.GetPhone() << std::endl;
+				std::cout << std::setw(10) << student.get_usn() << std::setw(15) << student.get_name() << std::setw(15) << student.date_to_text(student.get_dob()) << std::setw(20) <<
+					student::gender_to_text(student.get_gender()) << std::setw(15) << student::sem_to_text(student.get_sem()) << std::setw(15) << student.GetPhone() << std::endl;
 				count++;
 			}
 		}
@@ -194,15 +187,14 @@ public:
 		std::cin.get();
 	}
 
-	void DeleteStudent()
+	void delete_student()
 	{
-		int flag = false, secondFlag = false;
 		std::string studentName;
 		std::string studentUSN;
 		std::cout << "\nEnter the student name: \t";
 		std::cin >> studentName;
 		std::cout << "\n" << "\t\t" << "SL.NO." << "\t\t" << std::setw(15) << "USN" << std::setw(15) << "NAME" << std::endl;
-		flag = operation.SecondarySearch(studentName);
+		const int flag = operation.secondary_search(studentName);
 		if (!flag)
 			std::cout << "\nRecord Not Found";
 
@@ -210,54 +202,53 @@ public:
 		{
 			std::cout << "\nEnter the product number listed above to delete: \t";
 			std::cin >> studentUSN;
-			secondFlag = operation.Remove(studentUSN, studentName);
+			const int secondFlag = operation.remove(studentUSN, studentName);
 			if (secondFlag)
-				std::cout << "\n\nRecord deleted sucessfully";
+				std::cout << "\n\nRecord deleted Successfully";
 			else
 				std::cout << "\n Product number and name does not match";
-			operation.IndexWrite();
-			operation.SIndexWrite();
+			operation.index_write();
+			operation.s_index_write();
 		}
 		std::cin.get();
 	}
 
-	void IndexDisplay(int pos)
+	void index_display(int pos)
 	{
-		std::fstream tempStdFile;
-		operation.Opener(tempStdFile, DATADIREC, std::ios::in);
-		tempStdFile.seekg(atoi(operation.GetPrimaryAtPos(pos)->GetAddress().c_str()), std::ios::beg);
+		std::fstream temp_std_file;
+		operations::opener(temp_std_file, data_directory, std::ios::in);
+		temp_std_file.seekg(atoi(operation.get_primary_at_pos(pos)->GetAddress().c_str()), std::ios::beg);
 		std::cout << "\n\n\n";
 		std::cout << std::setw(25) << " " << "DISPLAYING RECORDS\n\n\n";
 		Unpack();
-		std::string usn = student.GetUsn();
-		std::string studentName = student.GetName();
-		std::string dob = student.DateToText(student.GetDOB());
-		std::string gender = student.GenderToText(student.GetGender());
-		std::string sem = student.SemToText(student.GetSem());
-		std::string phno = student.GetPhone();
+		std::string usn = student.get_usn();
+		std::string studentName = student.get_name();
+		std::string dob = student.date_to_text(student.get_dob());
+		std::string gender = student::gender_to_text(student.get_gender());
+		std::string sem = student::sem_to_text(student.get_sem());
+		std::string phone_number = student.GetPhone();
 
 		std::cout << std::setw(20) << " " << " USN  :  " << usn << "\n\n\n";
 		std::cout << std::setw(20) << " " << " NAME  :  " << studentName << "\n\n\n";
 		std::cout << std::setw(20) << " " << " Dob  :  " << dob << "\n\n\n";
 		std::cout << std::setw(20) << " " << " Gender :  " << gender << "\n\n\n";
 		std::cout << std::setw(20) << " " << " Sem :  " << sem << "\n\n\n";
-		std::cout << std::setw(20) << " " << " Phone :  " << phno << "\n\n\n";
+		std::cout << std::setw(20) << " " << " Phone :  " << phone_number << "\n\n\n";
 
-		tempStdFile.clear();
-		tempStdFile.close();
+		temp_std_file.clear();
+		temp_std_file.close();
 	}
 
-	void Indexing()
+	void indexing()
 	{
-		int searchPos;
-		std::string tempKey;
+		std::string temp_key;
 		std::cout << "\n\n\n Enter the primary key: \t";
-		std::cin >> tempKey;
-		searchPos = operation.Search(tempKey);
-		if (searchPos != -1)
+		std::cin >> temp_key;
+		const int search_pos = operation.search(temp_key);
+		if (search_pos != -1)
 		{
-			IndexDisplay(searchPos);
-			std::cout << "\n\n Sucessfull search: ";
+			index_display(search_pos);
+			std::cout << "\n\n Successful search: ";
 		}
 		else
 		{
@@ -266,31 +257,29 @@ public:
 		std::cin.get();
 	}
 
-	void SecondaryIndexing()
+	void secondary_indexing()
 	{
-		bool flag;
 		std::string studentName;
 		std::cout << "\nEnter the student name: \t";
 		std::cin >> studentName;
-		flag = operation.SecondarySearch(studentName);
+		const bool flag = operation.secondary_search(studentName);
 		if (!flag)
 			std::cout << "\nRecord not found!";
 
 		std::cin.get();
 	}
 
-	void InvertedList()
+	void inverted_list()
 	{
-		bool flag = false;
 		std::string tempStudentName;
 		std::cout << "\n\t\tInverted List\n";
 		std::cout << "\n\n\tENTER THE PRODUCT NAME TO SEARCH :\t";
 		std::cin >> tempStudentName;
-		flag = operation.SecondaryIndexList(tempStudentName);
+		const bool flag = operation.secondary_index_list(tempStudentName);
 		if (!flag)
 			std::cout << "\nNo records found";
 		else
-			Indexing();
+			indexing();
 	}
 };
 
