@@ -2,251 +2,243 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 #include<string>
-//#include"Operations.h"
+#include <utility>
 
-enum class Gender
+enum class gender
 {
-	Male,
-	Female,
-	Others,
-	NotSet
+	male,
+	female,
+	others,
+	not_set
 };
 
-enum class Sem
+enum class semester
 {
-	First,
-	Second,
-	Third,
-	Fourth,
-	Fifth,
-	Sixth,
-	Seventh,
-	Eight,
-	NotSet
+	first,
+	second,
+	third,
+	fourth,
+	fifth,
+	sixth,
+	seventh,
+	eight,
+	not_set
 };
 
-struct Date
+struct date
 {
-	int Day;
-	int Month;
-	int Year;
+	int day;
+	int month;
+	int year;
 };
 
-class Student
+class student
 {
 private:
 
-	std::string usn, studentName, phno;
-	Date dob;
-	Gender gender;
-	Sem sem;
+	std::string usn_, student_name_, phone_number_;
+	date dob_{};
+	gender gen_;
+	semester sem_;
 
 public:
 
-	Student()
+	student()
 	{
-		usn = "";
-		studentName = "";
-		dob.Day = 0;
-		dob.Month = 0;
-		dob.Year = 0;
-		gender = Gender::NotSet;
-		Sem sem = Sem::NotSet;
-		phno = "";
+		usn_ = "";
+		student_name_ = "";
+		dob_.day = 0;
+		dob_.month = 0;
+		dob_.year = 0;
+		gen_ = gender::not_set;
+		sem_  = semester::not_set;
+		phone_number_ = "";
 	}
 
-	Student(std::string pUsn, std::string pStudentName, Date pDob, Gender pGender, Sem pSem, std::string pPhno)
+	student(std::string p_usn, std::string p_student_name, const date p_dob, const gender p_gender, const semester p_sem, std::string p_phone_number)
 	{
-		usn = pUsn;
-		studentName = pStudentName;
-		dob.Day = pDob.Day;
-		dob.Month = pDob.Month;
-		dob.Year = pDob.Year;
-		gender = pGender;
-		sem = pSem;
-		phno = pPhno;
+		usn_ = std::move(p_usn);
+		student_name_ = std::move(p_student_name);
+		dob_.day = p_dob.day;
+		dob_.month = p_dob.month;
+		dob_.year = p_dob.year;
+		gen_ = p_gender;
+		sem_ = p_sem;
+		phone_number_ = std::move(p_phone_number);
 	}
 
-	std::string GetUsn()
+	std::string get_usn() const
 	{
-		return usn;
+		return usn_;
 	}
 
-	std::string GetName()
+	std::string get_name() const
 	{
-		return studentName;
+		return student_name_;
 	}
 
-	Date GetDOB()
+	date get_dob() const
 	{
-		return dob;
+		return dob_;
 	}
 
-	Gender GetGender()
+	gender get_gender() const
 	{
-		return gender;
+		return gen_;
 	}
 
-	Sem GetSem()
+	semester get_sem() const
 	{
-		return sem;
+		return sem_;
 	}
 
-	std::string GetPhone()
+	std::string GetPhone() const
 	{
-		return phno;
+		return phone_number_;
 	}
 
-	void SetUSN(std::string pUsn)
+	void set_usn(std::string pUsn)
 	{
-		usn = pUsn;
+		usn_ = std::move(pUsn);
 	}
 
-	void SetStudentName(std::string pStudentName)
+	void set_student_name(std::string pStudentName)
 	{
-		studentName = pStudentName;
+		student_name_ = std::move(pStudentName);
 	}
 
-	void SetDob(Date pDob)
+	void set_dob(date pDob)
 	{
-		dob = pDob;
+		dob_ = pDob;
 	}
 
-	void SetGender(Gender pGender)
+	void set_gender(gender pGender)
 	{
-		gender = pGender;
+		gen_ = pGender;
 	}
 
-	void SetSem(Sem pSem)
+	void set_sem(semester pSem)
 	{
-		sem = pSem;
+		sem_ = pSem;
 	}
 
-	void SetPhone(std::string pPhno)
+	void set_phone(std::string pPhno)
 	{
-		phno = pPhno;
+		phone_number_ = std::move(pPhno);
 	}
 
-	std::string DateToText(Date pDate)
+	std::string date_to_text(date pDate) const
 	{
-		std::string dateText = "";
-		if (pDate.Day < 9)
-			dateText += "0";
-		dateText += std::to_string(pDate.Day);
-		dateText += '/';
-		if (pDate.Month < 9)
-			dateText += "0";
-		dateText += std::to_string(pDate.Month);
-		dateText += '/';
-		dateText += std::to_string(pDate.Year);
+		std::string date_text = "";
+		if (pDate.day < 9)
+			date_text += "0";
+		date_text += std::to_string(pDate.day);
+		date_text += '/';
+		if (pDate.month < 9)
+			date_text += "0";
+		date_text += std::to_string(pDate.month);
+		date_text += '/';
+		date_text += std::to_string(pDate.year);
 
-		return dateText;
+		return date_text;
 	}
 
-	std::string GenderToText(Gender gender)
+	static std::string gender_to_text(const gender gen)
 	{
-		switch (gender)
+		switch (gen)
 		{
-		case Gender::Male:
-			return "Male";
-		case Gender::Female:
-			return "Female";
-		case Gender::Others:
-			return "Others";
-		case Gender::NotSet:
-			return "NotSet";
+		case gender::male:
+			return "male";
+		case gender::female:
+			return "female";
+		case gender::others:
+			return "others";
+		case gender::not_set:
+			return "not_set";
 		default:
 			return "";
 		}
 	}
 
-	std::string SemToText(Sem sem)
+	static std::string sem_to_text(const semester sem)
 	{
 		switch (sem)
 		{
-		case Sem::First:
-			return "First";
-		case Sem::Second:
-			return "Second";
-		case Sem::Third:
-			return "Third";
-		case Sem::Fourth:
-			return "Fourth";
-		case Sem::Fifth:
-			return "Fifth";
-		case Sem::Sixth:
-			return "Sixth";
-		case Sem::Seventh:
-			return "Seventh";
-		case Sem::Eight:
-			return "Eight";
-		case Sem::NotSet:
+		case semester::first:
+			return "first";
+		case semester::second:
+			return "second";
+		case semester::third:
+			return "third";
+		case semester::fourth:
+			return "fourth";
+		case semester::fifth:
+			return "fifth";
+		case semester::sixth:
+			return "sixth";
+		case semester::seventh:
+			return "seventh";
+		case semester::eight:
+			return "eight";
+		case semester::not_set:
 			return "Not Set";
 		default:
 			return "";
 		}
 	}
 
-	Date TextToDate(std::string pTextDate)
+	static date text_to_date(const std::string& p_text_date)
 	{
-		Date date;
-		date.Day = 0;
-		date.Month = 0;
-		date.Year = 0;
-		int j = 0, i = 0;
+		date date_to_convert{};
 
 		std::string day, month, year;
 
-		day = pTextDate.substr(0, 2);
+		day = p_text_date.substr(0, 2);
+		month = p_text_date.substr(3, 5);
+		year = p_text_date.substr(6, 9);
 
-		month = pTextDate.substr(3, 5);
-		year = pTextDate.substr(6, 9);
-
-		date.Day = std::atoi(day.c_str());
-		date.Month = std::atoi(month.c_str());
-		date.Year = std::atoi(year.c_str());
-		return date;
+		date_to_convert.day = std::atoi(day.c_str());
+		date_to_convert.month = std::atoi(month.c_str());
+		date_to_convert.year = std::atoi(year.c_str());
+		return date_to_convert;
 	}
 
-	Sem TextToSem(std::string pTextSem)
+	static semester text_to_sem(const std::string& pTextSem)
 	{
-		if ((pTextSem == "First") || (pTextSem == "first"))
-			return Sem::First;
-		else if ((pTextSem == "Second") || (pTextSem == "second"))
-			return Sem::Second;
-		else if ((pTextSem == "Third") || (pTextSem == "third"))
-			return Sem::Third;
-		else if ((pTextSem == "Fourth") || (pTextSem == "fourth"))
-			return Sem::Fourth;
-		else if ((pTextSem == "Fifth") || (pTextSem == "fifth"))
-			return Sem::Fifth;
-		else if ((pTextSem == "Sixth") || (pTextSem == "sixth"))
-			return Sem::Sixth;
-		else if ((pTextSem == "Seventh") || (pTextSem == "seventh"))
-			return Sem::Seventh;
-		else if ((pTextSem == "Eight") || (pTextSem == "eight"))
-			return Sem::Eight;
+		if ((pTextSem == "first") || (pTextSem == "First"))
+			return semester::first;
+		if ((pTextSem == "second") || (pTextSem == "Second"))
+			return semester::second;
+		if ((pTextSem == "third") || (pTextSem == "Third"))
+			return semester::third;
+		if ((pTextSem == "fourth") || (pTextSem == "Fourth"))
+			return semester::fourth;
+		if ((pTextSem == "fifth") || (pTextSem == "Fifth"))
+			return semester::fifth;
+		if ((pTextSem == "sixth") || (pTextSem == "Sixth"))
+			return semester::sixth;
+		if ((pTextSem == "seventh") || (pTextSem == "Seventh"))
+			return semester::seventh;
+		if ((pTextSem == "eight") || (pTextSem == "Eight"))
+			return semester::eight;
+		return {};
+	}
+
+	static gender TextToGender(const std::string& gender)
+	{
+		if ((gender == "male") || (gender == "Male"))
+			return gender::male;
+		else if (gender == "female" || gender == "Female")
+			return gender::female;
+		else if (gender == "others" || gender == "Others")
+			return gender::others;
 		else
-			return Sem::NotSet;
+			return gender::not_set;
 	}
 
-	Gender TextToGender(std::string gender)
+	static bool isUSNValid(std::string studentUSN)
 	{
-		if ((gender == "Male") || (gender == "male"))
-			return Gender::Male;
-		else if (gender == "Female" || gender == "female")
-			return Gender::Female;
-		else if (gender == "Others" || gender == "others")
-			return Gender::Others;
-		else
-			return Gender::NotSet;
-	}
-
-	bool isUSNValid(std::string studentUSN)
-	{
-		int i = 0;
-
-		for (i = 0; studentUSN[i] != '\0'; i++)
+		for (int i = 0; studentUSN[i] != '\0'; i++)
 		{
 			if (!isalpha(studentUSN[i]) && !isdigit(studentUSN[i]))
 			{
@@ -260,10 +252,9 @@ public:
 			return true;
 	}
 
-	bool isNameValid(std::string studentName)
+	static bool isNameValid(std::string studentName)
 	{
-		int i = 0;
-		for (i = 0; studentName[i] != '\0'; i++)
+		for (int i = 0; studentName[i] != '\0'; i++)
 		{
 			if (!isalpha(studentName[i]))
 			{
@@ -273,11 +264,9 @@ public:
 		return true;
 	}
 
-	bool isPhoneValid(std::string phno)
+	static bool isPhoneValid(std::string phno)
 	{
-		int i;
-
-		for (i = 0; phno[i] != '\0'; i++)
+		for (int i = 0; phno[i] != '\0'; i++)
 		{
 			if (!isdigit(phno[i]))
 			{
@@ -290,42 +279,34 @@ public:
 			return true;
 	}
 
-	bool isDobValid(Date date)
+	static bool isDobValid(date date)
 	{
-		if (date.Day > 31 || date.Day <= 0)
+		if (date.day > 31 || date.day <= 0)
 			return false;
-		if (date.Month > 12 || date.Month <= 0)
+		if (date.month > 12 || date.month <= 0)
 			return false;
-		if (date.Year < 1970 || date.Year >= 2005)
+		if (date.year < 1970 || date.year >= 2005)
+			return false;
+		return true;
+	}
+
+	static bool is_gender_valid(const std::string& p_gender)
+	{
+		const gender gen = TextToGender(p_gender);
+
+		if (gen == gender::not_set)
+			return false;
+		return true;
+	}
+
+	static bool is_sem_valid(const std::string& p_semester)
+	{
+		const semester sem = text_to_sem(p_semester);
+		if (sem == semester::not_set)
 			return false;
 		else
 			return true;
 	}
 
-	bool isGenderValid(std::string gender)
-	{
-		Gender gen;
-		gen = TextToGender(gender);
-
-		if (gen == Gender::NotSet)
-			return false;
-		else
-			return true;
-	}
-
-	bool isSemValid(std::string semester)
-	{
-		Sem sem;
-		sem = TextToSem(semester);
-		if (sem == Sem::NotSet)
-			return false;
-		else
-			return true;
-	}
-
-	~Student()
-	{
-	}
 };
-
 #endif
